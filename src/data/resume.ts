@@ -2,8 +2,6 @@ export const profile = {
   name: "Nelson Selvam",
   title: "Senior Software Engineer / Java Full Stack Developer",
   location: "Bristol, CT, USA",
-  phone: "203-648-2930",
-  email: "pvselvam.nelson@gmail.com",
   github: "https://github.com/nelsonselvam",
   linkedin: "https://www.linkedin.com/in/nelsonselvam/",
   summary: `Senior Software Engineer with 10+ years of experience designing and delivering scalable, backend-focused full-stack solutions.
@@ -26,7 +24,7 @@ export const skills = {
 export const experience = [
   {
     role: "Senior Software Engineer",
-    company: "Mphasis (Client: Corebridge Financial, formerly AIG)",
+    company: "Mphasis",
     period: "Mar 2019 — Present · USA",
     bullets: [
       "Led microservices modernization for retirement services platform.",
@@ -46,7 +44,7 @@ export const experience = [
   },
   {
     role: "Software Engineer",
-    company: "Mphasis (Client: AIG)",
+    company: "Mphasis",
     period: "Oct 2016 — Feb 2019 · India",
     bullets: [
       "Built BI solutions in Tableau & Power BI for sales/product/customer metrics.",
@@ -56,7 +54,7 @@ export const experience = [
   },
   {
     role: "Associate Software Engineer",
-    company: "Mphasis (Client: AIG)",
+    company: "Mphasis",
     period: "May 2014 — Sep 2016 · India",
     bullets: [
       "Maintained Oracle Forms/Reports apps for insurance processes using SQL/PLSQL.",
