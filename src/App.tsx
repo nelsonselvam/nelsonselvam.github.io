@@ -209,7 +209,7 @@ export default function App() {
           <div className="max-w-3xl mx-auto flex justify-center animate-slide-up">
             <div className="relative">
               <img
-                src="/src/images/profile.jpg"
+                src="./images/profile.jpg"
                 alt="Nelson Selvam"
                 className="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-blue-400 shadow-lg hover:shadow-xl transition-shadow duration-300"
               />
