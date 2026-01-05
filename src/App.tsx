@@ -15,6 +15,7 @@ export default function App() {
   const [floatingElements, setFloatingElements] = useState<FloatingEmoji[]>([])
   const [activeAboutTab, setActiveAboutTab] = useState(0)
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({})
+  const [profileFlipped, setProfileFlipped] = useState(false)
 
   const emojisPool = ['💻', '🎵', '📚', '☕', '⚙️', '🔧', '🚀', '🧠', '📝', '🎯', '💡', '🔬']
 
@@ -158,6 +159,34 @@ export default function App() {
         .flashcard-back {
           transform: rotateY(180deg);
         }
+
+        .profile-card {
+          perspective: 1000px;
+          cursor: pointer;
+        }
+
+        .profile-card-inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          transition: transform 0.6s;
+          transform-style: preserve-3d;
+        }
+
+        .profile-card.flipped .profile-card-inner {
+          transform: rotateY(180deg);
+        }
+
+        .profile-front, .profile-back {
+          backface-visibility: hidden;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+        }
+
+        .profile-back {
+          transform: rotateY(180deg);
+        }
       `}</style>
 
       {/* Floating Background Elements */}
@@ -177,13 +206,14 @@ export default function App() {
         ))}
       </div>
 
+
       {/* Theme Toggle */}
       <div className="fixed top-6 right-6 z-50">
         <button
           onClick={() => setIsDark(!isDark)}
           className={`p-3 rounded-full transition-all ${isDark
-              ? 'bg-slate-700 hover:bg-slate-600 text-yellow-300'
-              : 'bg-slate-300 hover:bg-slate-400 text-slate-900'
+            ? 'bg-slate-700 hover:bg-slate-600 text-yellow-300'
+            : 'bg-slate-300 hover:bg-slate-400 text-slate-900'
             }`}
         >
           {isDark ? '☀️' : '🌙'}
@@ -199,7 +229,7 @@ export default function App() {
               Hey there! <span className="inline-block animate-wave">👋</span>
             </h1>
             <p className={`text-xl md:text-2xl ${textSecondaryClass} animate-slide-up`} style={{ animationDelay: '0.2s' }}>
-              Welcome to my digital introduction!
+              Welcome to my introduction!
             </p>
           </div>
         </section>
@@ -207,13 +237,25 @@ export default function App() {
         {/* Profile Image Section */}
         <section className="py-20 px-4">
           <div className="max-w-3xl mx-auto flex justify-center animate-slide-up">
-            <div className="relative">
-              <img
-                src="./images/profile.jpg"
-                alt="Nelson Selvam"
-                className="w-48 h-48 md:w-56 md:h-56 rounded-full object-cover border-4 border-blue-400 shadow-lg hover:shadow-xl transition-shadow duration-300"
-              />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-0 hover:opacity-10 transition-opacity duration-300"></div>
+            <div
+              className={`profile-card w-48 h-48 md:w-56 md:h-56 ${profileFlipped ? 'flipped' : ''}`}
+              onClick={() => setProfileFlipped(!profileFlipped)}
+            >
+              <div className="profile-card-inner">
+                <div className="profile-front relative">
+                  <img
+                    src="./images/profile.jpg"
+                    alt="Nelson Selvam"
+                    className="w-full h-full rounded-full object-cover border-4 border-blue-400 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  />
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-0 hover:opacity-10 transition-opacity duration-300"></div>
+                </div>
+                <div className="profile-back relative flex items-center justify-center">
+                  <div className="w-full h-full rounded-full border-4 border-blue-400 shadow-lg flex items-center justify-center text-6xl bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400">
+                    👨‍💻
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -237,12 +279,12 @@ export default function App() {
                   key={id}
                   onClick={() => setActiveAboutTab(id)}
                   className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${activeAboutTab === id
-                      ? isDark
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                        : 'bg-gradient-to-r from-blue-400 to-purple-400 text-white shadow-lg'
-                      : isDark
-                        ? 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50'
-                        : 'bg-slate-300/30 text-slate-700 hover:bg-slate-300/50'
+                    ? isDark
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                      : 'bg-gradient-to-r from-blue-400 to-purple-400 text-white shadow-lg'
+                    : isDark
+                      ? 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50'
+                      : 'bg-slate-300/30 text-slate-700 hover:bg-slate-300/50'
                     }`}
                 >
                   <span className="text-xl">{/* tab.icon */}</span>
@@ -253,8 +295,8 @@ export default function App() {
 
             {/* Tab Content */}
             <div className={`p-8 rounded-lg border transition-all duration-300 ${isDark
-                ? 'bg-slate-700/30 border-slate-600/50'
-                : 'bg-slate-200/30 border-slate-400/50'
+              ? 'bg-slate-700/30 border-slate-600/50'
+              : 'bg-slate-200/30 border-slate-400/50'
               }`}>
               {activeAboutTab === 0 && (
                 <div className="animate-slide-up space-y-4">
@@ -367,70 +409,85 @@ export default function App() {
           </div>
         </section>
 
-        {/* How I Work */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
+
+
+
+
+        {/* Things I Can Help With (grouped) */}
+        <section className="py-16 px-4 animate-slide-up">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">How I Work</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div 
-                className={`flashcard h-48 ${flippedCards['work-1'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-1')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-blue-400/20' : 'border-blue-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">🧠</p>
-                    <h3 className={`font-bold ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>I ask why before how</h3>
-                  </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-blue-400/20' : 'border-blue-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>Understanding the problem deeply leads to better, longer-lasting solutions.</p>
-                  </div>
-                </div>
-              </div>
+            <h2 className="text-3xl font-bold mb-4 text-center">
+              Things I Can Help With
+            </h2>
+            <p className={`${textSecondaryClass} text-center mb-8`}>
+              Not an exhaustive list — just areas where I’m usually happy to jump in, pair, or help unblock things.
+            </p>
 
-              <div 
-                className={`flashcard h-48 ${flippedCards['work-2'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-2')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-purple-400/20' : 'border-purple-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">📝</p>
-                    <h3 className={`font-bold ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>I value clarity</h3>
-                  </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-purple-400/20' : 'border-purple-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>Clear APIs, documentation, and ownership reduce friction and scale better over time.</p>
-                  </div>
+            {[
+              {
+                category: 'Backend',
+                skills: [
+                  { label: 'Java', icon: '☕', color: 'text-amber-500' },
+                  { label: 'Spring Boot', icon: '🌱', color: 'text-green-500' },
+                  { label: 'REST APIs', icon: '🔗', color: 'text-sky-500' },
+                  { label: 'Microservices', icon: '🧱', color: 'text-indigo-500' },
+                  { label: 'System Design', icon: '🧠', color: 'text-purple-500' },
+                  { label: 'API Integrations', icon: '🔌', color: 'text-cyan-500' },
+                ]
+              },
+              {
+                category: 'Data & Databases',
+                skills: [
+                  { label: 'Databases (SQL)', icon: '🗄️', color: 'text-emerald-500' },
+                  { label: 'NoSQL', icon: '📦', color: 'text-teal-500' },
+                  { label: 'Data Modeling', icon: '📐', color: 'text-teal-500' },
+                  { label: 'Efficient Queries', icon: '⚡', color: 'text-yellow-500' },
+                ]
+              },
+              {
+                category: 'Cloud & Frontend',
+                skills: [
+                  { label: 'Cloud (AWS)', icon: '☁️', color: 'text-blue-500' },
+                  { label: 'React (basic)', icon: '⚛️', color: 'text-sky-400' },
+                  { label: 'Debugging & Reviews', icon: '🛠️', color: 'text-rose-500' }
+                ]
+              }
+            ].map(group => (
+              <div key={group.category} className="mb-6">
+                <h3 className={`font-semibold mb-2 text-center ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  {group.category}
+                </h3>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {group.skills.map(({ label, icon, color }) => (
+                    <span
+                      key={label}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-all
+                ${isDark
+                          ? 'border-slate-600 text-slate-300 hover:border-slate-500'
+                          : 'border-slate-400 text-slate-700 hover:border-slate-500'
+                        }`}
+                    >
+                      <span className={`${color}`} role="img" aria-label={label}>{icon}</span>
+                      <span>{label}</span>
+                    </span>
+                  ))}
                 </div>
               </div>
+            ))}
+          </div>
+        </section>
 
-              <div 
-                className={`flashcard h-48 ${flippedCards['work-3'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-3')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-pink-400/20' : 'border-pink-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">⚖️</p>
-                    <h3 className={`font-bold ${isDark ? 'text-pink-300' : 'text-pink-600'}`}>I balance pragmatism with quality</h3>
-                  </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-pink-400/20' : 'border-pink-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>I aim for solutions that are robust, maintainable, and delivered at the right time.</p>
-                  </div>
-                </div>
-              </div>
 
-              <div 
-                className={`flashcard h-48 ${flippedCards['work-4'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-4')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-emerald-400/20' : 'border-emerald-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">📣</p>
-                    <h3 className={`font-bold ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>I welcome feedback</h3>
-                  </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-emerald-400/20' : 'border-emerald-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>Early conversations and course corrections are always better than late surprises.</p>
-                  </div>
-                </div>
-              </div>
+        {/* Reach Me Out For */}
+        <section className={`py-20 px-4 ${sectionBgClass}`}>
+          <div className="max-w-3xl mx-auto text-center animate-slide-up">
+            <h2 className="text-4xl font-bold mb-8">Reach Me Out For</h2>
+            <div className="flex flex-wrap justify-center gap-3">
+              <span className={`px-6 py-3 ${isDark ? 'bg-blue-500/20 border-blue-400/30' : 'bg-blue-300/30 border-blue-600/30'} border rounded-full`}>🚀 Technical discussions</span>
+              <span className={`px-6 py-3 ${isDark ? 'bg-purple-500/20 border-purple-400/30' : 'bg-purple-300/30 border-purple-600/30'} border rounded-full`}>🤝 Collaboration</span>
+              <span className={`px-6 py-3 ${isDark ? 'bg-pink-500/20 border-pink-400/30' : 'bg-pink-300/30 border-pink-600/30'} border rounded-full`}>📚 Knowledge sharing</span>
+              <span className={`px-6 py-3 ${isDark ? 'bg-emerald-500/20 border-emerald-400/30' : 'bg-emerald-300/30 border-emerald-600/30'} border rounded-full`}>☕ Coffee chats</span>
+              <span className={`px-6 py-3 ${isDark ? 'bg-amber-500/20 border-amber-400/30' : 'bg-amber-300/30 border-amber-600/30'} border rounded-full`}>💡 New ideas</span>
             </div>
           </div>
         </section>
@@ -461,12 +518,12 @@ export default function App() {
                 <h3 className={`text-xl font-bold ${isDark ? 'text-amber-400' : 'text-amber-600'} mb-4`}>⚡ Notes</h3>
                 <ul className={`space-y-3 ${textSecondaryClass}`}>
                   <li className="flex gap-3">
-                    <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>🤫</span>
-                    <span>Quiet in large meetings at first — if I'm silent, it usually means I'm thinking, not disengaged.</span>
+                    <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>👂</span>
+                    <span>I like to listen first and then contribute once I have clarity.</span>
                   </li>
                   <li className="flex gap-3">
                     <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>⏳</span>
-                    <span>Prefer async updates when possible — it helps me focus on deep work.</span>
+                    <span>Async updates work great for me, but I’m always happy to sync when something’s urgent.</span>
                   </li>
                 </ul>
               </div>
@@ -474,53 +531,75 @@ export default function App() {
           </div>
         </section>
 
-        {/* Reach Me Out For */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
-          <div className="max-w-3xl mx-auto text-center animate-slide-up">
-            <h2 className="text-4xl font-bold mb-8">Reach Me Out For</h2>
-            <div className="flex flex-wrap justify-center gap-3">
-              <span className={`px-6 py-3 ${isDark ? 'bg-blue-500/20 border-blue-400/30' : 'bg-blue-300/30 border-blue-600/30'} border rounded-full`}>🚀 Technical discussions</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-purple-500/20 border-purple-400/30' : 'bg-purple-300/30 border-purple-600/30'} border rounded-full`}>🤝 Collaboration</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-pink-500/20 border-pink-400/30' : 'bg-pink-300/30 border-pink-600/30'} border rounded-full`}>📚 Knowledge sharing</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-emerald-500/20 border-emerald-400/30' : 'bg-emerald-300/30 border-emerald-600/30'} border rounded-full`}>☕ Coffee chats</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-amber-500/20 border-amber-400/30' : 'bg-amber-300/30 border-amber-600/30'} border rounded-full`}>💡 New ideas</span>
+        {/* Things I Enjoy */}
+        <section className="py-20 px-4 animate-slide-up">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center">
+              Things I Enjoy (Outside the Day Job)
+            </h2>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <div
+                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
+                  }`}
+              >
+                <p className="text-2xl mb-3">☕</p>
+                <h3 className="font-bold mb-2">Good coffee & slow conversations</h3>
+                <p className={`${textTertiaryClass} text-sm`}>
+                  I enjoy unstructured chats over coffee—usually where the best ideas and
+                  stories surface.
+                </p>
+              </div>
+
+              <div
+                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
+                  }`}
+              >
+                <p className="text-2xl mb-3">🎵</p>
+                <h3 className="font-bold mb-2">Music as a reset button</h3>
+                <p className={`${textTertiaryClass} text-sm`}>
+                  Music helps me unwind, refocus, and occasionally disappear into my own
+                  thoughts.
+                </p>
+              </div>
+
+              <div
+                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
+                  }`}
+              >
+                <p className="text-2xl mb-3">🚶</p>
+                <h3 className="font-bold mb-2">Long walks</h3>
+                <p className={`${textTertiaryClass} text-sm`}>
+                  Walking helps me clear my head—some of my best thinking happens on foot.
+                </p>
+              </div>
+
+              <div
+                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
+                  }`}
+              >
+                <p className="text-2xl mb-3">📚</p>
+                <h3 className="font-bold mb-2">Reading (not just tech)</h3>
+                <p className={`${textTertiaryClass} text-sm`}>
+                  I enjoy reading a mix of technology, ideas, and anything that explains
+                  how people and systems work.
+                </p>
+              </div>
+
+              <div
+                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
+                  } md:col-span-2 md:w-1/2 md:mx-auto`}
+              >
+                <p className="text-2xl mb-3">🧩</p>
+                <h3 className="font-bold mb-2">Puzzles & patterns</h3>
+                <p className={`${textTertiaryClass} text-sm`}>
+                  I like noticing patterns—whether in problems, music, or everyday life.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Things I Enjoy */}
-        <section className="py-20 px-4 animate-slide-up">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">Things I Enjoy</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'}`}>
-                <p className="text-2xl mb-3">📚</p>
-                <h3 className="font-bold mb-2">Reading about systems and AI/ML</h3>
-                <p className={`${textTertiaryClass} text-sm`}>I enjoy learning how complex systems are designed, scaled, and how AI/ML is influencing modern software and decision-making.</p>
-              </div>
-              <div className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'}`}>
-                <p className="text-2xl mb-3">🧩</p>
-                <h3 className="font-bold mb-2">Solving edge cases</h3>
-                <p className={`${textTertiaryClass} text-sm`}>I like working through problems that don't have obvious answers and require careful thinking.</p>
-              </div>
-              <div className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'}`}>
-                <p className="text-2xl mb-3">☕</p>
-                <h3 className="font-bold mb-2">Coffee over meetings</h3>
-                <p className={`${textTertiaryClass} text-sm`}>I prefer informal 1-on-1 conversations where ideas flow more naturally than in structured meetings.</p>
-              </div>
-              <div className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'}`}>
-                <p className="text-2xl mb-3">🎵</p>
-                <h3 className="font-bold mb-2">Music as meditation</h3>
-                <p className={`${textTertiaryClass} text-sm`}>Listening to music helps me focus, reset, and think clearly.</p>
-              </div>
-              <div className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'} md:col-span-2 md:w-1/2 md:mx-auto`}>
-                <p className="text-2xl mb-3">🚶</p>
-                <h3 className="font-bold mb-2">Long walks for thinking</h3>
-                <p className={`${textTertiaryClass} text-sm`}>Some of my clearest thinking happens while walking and quietly working through problems.</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Excited About */}
         <section className={`py-20 px-4 ${sectionBgClass}`}>
@@ -538,6 +617,77 @@ export default function App() {
               <div className={`p-6 ${isDark ? 'bg-gradient-to-r from-pink-500/10 to-pink-500/5 border-pink-400/30' : 'bg-gradient-to-r from-pink-300/20 to-pink-200/10 border-pink-600/30'} rounded-lg border`}>
                 <h3 className={`font-bold ${isDark ? 'text-pink-300' : 'text-pink-700'} mb-2`}>• Building things that last</h3>
                 <p className={textTertiaryClass}>Creating solutions that are maintainable, scalable, and impact-driven.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+
+        {/* How I Work */}
+        <section className={`py-20 px-4 ${sectionBgClass}`}>
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center">How I Work</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div
+                className={`flashcard h-48 ${flippedCards['work-1'] ? 'flipped' : ''}`}
+                onClick={() => toggleFlip('work-1')}
+              >
+                <div className="flashcard-inner">
+                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-blue-400/20' : 'border-blue-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className="text-lg mb-2">🧠</p>
+                    <h3 className={`font-bold ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>I ask why before how</h3>
+                  </div>
+                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-blue-400/20' : 'border-blue-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className={`${textTertiaryClass} text-sm`}>Understanding the problem deeply leads to better, longer-lasting solutions.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`flashcard h-48 ${flippedCards['work-2'] ? 'flipped' : ''}`}
+                onClick={() => toggleFlip('work-2')}
+              >
+                <div className="flashcard-inner">
+                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-purple-400/20' : 'border-purple-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className="text-lg mb-2">📝</p>
+                    <h3 className={`font-bold ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>I value clarity</h3>
+                  </div>
+                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-purple-400/20' : 'border-purple-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className={`${textTertiaryClass} text-sm`}>Clear APIs, documentation, and ownership reduce friction and scale better over time.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`flashcard h-48 ${flippedCards['work-3'] ? 'flipped' : ''}`}
+                onClick={() => toggleFlip('work-3')}
+              >
+                <div className="flashcard-inner">
+                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-pink-400/20' : 'border-pink-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className="text-lg mb-2">⚖️</p>
+                    <h3 className={`font-bold ${isDark ? 'text-pink-300' : 'text-pink-600'}`}>I balance pragmatism with quality</h3>
+                  </div>
+                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-pink-400/20' : 'border-pink-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className={`${textTertiaryClass} text-sm`}>I aim for solutions that are robust, maintainable, and delivered at the right time.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`flashcard h-48 ${flippedCards['work-4'] ? 'flipped' : ''}`}
+                onClick={() => toggleFlip('work-4')}
+              >
+                <div className="flashcard-inner">
+                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-emerald-400/20' : 'border-emerald-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className="text-lg mb-2">📣</p>
+                    <h3 className={`font-bold ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>I welcome feedback</h3>
+                  </div>
+                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-emerald-400/20' : 'border-emerald-600/20'} flex flex-col items-center justify-center text-center`}>
+                    <p className={`${textTertiaryClass} text-sm`}>Early conversations and course corrections are always better than late surprises.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -579,6 +729,30 @@ export default function App() {
             Get in Touch
           </button>
         </section>
+
+        {/* GitHub Link Button */}
+        <a
+          href="https://github.com/nelsonselvam/nelsonselvam.github.io/tree/main"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="fixed top-4 left-4 z-50 flex items-center gap-2 px-3 py-2 bg-black/80 text-white rounded-lg shadow-lg hover:bg-black transition-all"
+          aria-label="View source on GitHub"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.73.083-.73 1.205.084 1.84 1.238 1.84 1.238 1.07 1.834 2.807 1.304 3.492.997.108-.774.418-1.304.76-1.604-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.123-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.518 11.518 0 0 1 3-.404c1.02.004 2.046.138 3 .404 2.29-1.552 3.295-1.23 3.295-1.23.654 1.653.242 2.873.12 3.176.77.84 1.233 1.91 1.233 3.22 0 4.61-2.805 5.625-5.475 5.922.43.37.815 1.102.815 2.222 0 1.604-.015 2.896-.015 3.286 0 .32.217.694.825.576C20.565 21.796 24 17.3 24 12c0-6.627-5.373-12-12-12z"
+            />
+          </svg>
+          <span className="text-sm font-semibold">View Source</span>
+        </a>
+
       </main>
     </div>
   )
