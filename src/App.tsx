@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Nav from './components/Nav'
 import TypingBanner from './components/TypingBanner'
+import CareerProgression from './components/CareerProgression'
 
 interface FloatingEmoji {
   emoji: string
@@ -11,11 +12,54 @@ interface FloatingEmoji {
 }
 
 export default function App() {
-  const [isDark, setIsDark] = useState(true)
+  const [isDark, setIsDark] = useState(false)
   const [floatingElements, setFloatingElements] = useState<FloatingEmoji[]>([])
   const [activeAboutTab, setActiveAboutTab] = useState(0)
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({})
   const [profileFlipped, setProfileFlipped] = useState(false)
+  const [funFactFlipped, setFunFactFlipped] = useState<Record<string, boolean>>({})
+
+  // Auto-flip profile picture at intervals
+  useEffect(() => {
+    const flipInterval = setInterval(() => {
+      setProfileFlipped(prev => !prev)
+    }, 4000) // Flip every 4 seconds
+
+    return () => clearInterval(flipInterval)
+  }, [])
+
+  // Section IDs in order
+  const sectionIds = ['hero', 'about', 'career', 'skills', 'user-manual', 'excited', 'how-i-work', 'built-with', 'cta']
+
+  // Scroll to next section
+  const scrollToNextSection = () => {
+    const currentScroll = window.scrollY + window.innerHeight / 2
+    const sections = sectionIds.map(id => {
+      const element = document.getElementById(id)
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        return {
+          id,
+          top: rect.top + window.scrollY,
+          bottom: rect.bottom + window.scrollY
+        }
+      }
+      return null
+    }).filter(Boolean) as Array<{ id: string, top: number, bottom: number }>
+
+    // Find the next section that hasn't been scrolled past
+    const nextSection = sections.find(section => section.top > currentScroll)
+
+    if (nextSection) {
+      const element = document.getElementById(nextSection.id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    } else {
+      // If at the end, scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   const emojisPool = ['💻', '🎵', '📚', '☕', '⚙️', '🔧', '🚀', '🧠', '📝', '🎯', '💡', '🔬']
 
@@ -43,6 +87,7 @@ export default function App() {
 
   const sectionBgClass = isDark ? 'bg-slate-800/50' : 'bg-slate-200/50'
   const cardBgClass = isDark ? 'bg-slate-700/50' : 'bg-slate-300/30'
+  const borderClass = isDark ? 'border-slate-600' : 'border-slate-400'
   const textSecondaryClass = isDark ? 'text-slate-300' : 'text-slate-700'
   const textTertiaryClass = isDark ? 'text-slate-400' : 'text-slate-600'
 
@@ -223,469 +268,377 @@ export default function App() {
       <TypingBanner />
       <main className="overflow-hidden relative z-10">
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center px-4 -mt-20">
+        <section id="hero" className="relative min-h-screen flex items-center justify-center px-4 -mt-20">
           <div className="text-center space-y-6 max-w-3xl animate-fade-in-scale">
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent animate-slide-up">
-              Hey there! <span className="inline-block animate-wave">👋</span>
-            </h1>
-            <p className={`text-xl md:text-2xl ${textSecondaryClass} animate-slide-up`} style={{ animationDelay: '0.2s' }}>
-              Welcome to my introduction!
-            </p>
-          </div>
-        </section>
-
-        {/* Profile Image Section */}
-        <section className="py-20 px-4">
-          <div className="max-w-3xl mx-auto flex justify-center animate-slide-up">
-            <div
-              className={`profile-card w-48 h-48 md:w-56 md:h-56 ${profileFlipped ? 'flipped' : ''}`}
-              onClick={() => setProfileFlipped(!profileFlipped)}
-            >
-              <div className="profile-card-inner">
-                <div className="profile-front relative">
-                  <img
-                    src="./images/profile.jpg"
-                    alt="Nelson Selvam"
-                    className="w-full h-full rounded-full object-cover border-4 border-blue-400 shadow-lg hover:shadow-xl transition-shadow duration-300"
-                  />
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 opacity-0 hover:opacity-10 transition-opacity duration-300"></div>
-                </div>
-                <div className="profile-back relative flex items-center justify-center">
-                  <div className="w-full h-full rounded-full border-4 border-blue-400 shadow-lg flex items-center justify-center text-6xl bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400">
-                    👨‍💻
+            {/* Profile Image */}
+            <div className="flex justify-center mb-8 animate-slide-up">
+              <div
+                className={`profile-card w-32 h-32 md:w-40 md:h-40 ${profileFlipped ? 'flipped' : ''}`}
+              >
+                <div className="profile-card-inner">
+                  <div className="profile-front relative">
+                    <img
+                      src="./images/profile.jpg"
+                      alt="Nelson Selvam"
+                      className="w-full h-full rounded-full object-cover border-4 border-slate-400 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                    />
+                    <div className="absolute inset-0 rounded-full bg-slate-400 opacity-0 hover:opacity-5 transition-opacity duration-300"></div>
+                  </div>
+                  <div className="profile-back relative flex items-center justify-center">
+                    <div className="w-full h-full rounded-full border-4 border-slate-400 shadow-lg flex items-center justify-center text-4xl md:text-5xl bg-gradient-to-br from-slate-500 to-slate-600">
+                      👨‍💻
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 bg-clip-text text-transparent animate-slide-up">
+              Hey there! <span className="inline-block animate-wave">👋</span>
+            </h1>
+            <p className={`text-xl md:text-2xl ${textSecondaryClass} animate-slide-up`} style={{ animationDelay: '0.2s' }}>
+              I've been vibe coding lately and thought I'd pass the vibe along. This introduction is fully vibe coded.
+            </p>
           </div>
         </section>
 
+        {/* About Me & Career Progression */}
+        <section id="about" className={`py-20 px-4 ${sectionBgClass}`}>
+          <div className="max-w-6xl mx-auto animate-slide-up space-y-16">
+            {/* About Me Section */}
+            <div>
+              <h2 className="text-4xl font-bold mb-8 text-center">About Me</h2>
 
-
-        {/* About Me */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
-          <div className="max-w-3xl mx-auto animate-slide-up">
-            <h2 className="text-4xl font-bold mb-12 text-center">About Me</h2>
-
-            {/* Tab Navigation */}
-            <div className="flex flex-wrap gap-4 mb-8 justify-center">
-              {/*
-                { id: 0, icon: '🧠', label: 'Curious & Thoughtful' },
-                { id: 1, icon: '🤝', label: 'Collaborative' },
-                { id: 2, icon: '📚', label: 'Continuous Learner' }
-              */}
-              {Array.from({ length: 3 }, (_, i) => i).map((id) => (
-                <button
-                  key={id}
-                  onClick={() => setActiveAboutTab(id)}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2 ${activeAboutTab === id
-                    ? isDark
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                      : 'bg-gradient-to-r from-blue-400 to-purple-400 text-white shadow-lg'
-                    : isDark
-                      ? 'bg-slate-700/50 text-slate-300 hover:bg-slate-600/50'
-                      : 'bg-slate-300/30 text-slate-700 hover:bg-slate-300/50'
-                    }`}
-                >
-                  <span className="text-xl">{/* tab.icon */}</span>
-                  <span className="hidden sm:inline">{/* tab.label */}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Tab Content */}
-            <div className={`p-8 rounded-lg border transition-all duration-300 ${isDark
-              ? 'bg-slate-700/30 border-slate-600/50'
-              : 'bg-slate-200/30 border-slate-400/50'
-              }`}>
-              {activeAboutTab === 0 && (
-                <div className="animate-slide-up space-y-4">
-                  <div className="flex items-start gap-4">
-                    <span className="text-4xl">🧠</span>
+              {/* Three Items in a Row (3x1 Grid) */}
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className={`p-6 rounded-lg border transition-all duration-300 ${isDark
+                  ? 'bg-slate-700/30 border-slate-600/50'
+                  : 'bg-slate-200/30 border-slate-400/50'
+                  }`}>
+                  <div className="flex flex-col items-center text-center gap-4">
+                    <span className="text-4xl">🔍</span>
                     <div>
-                      <h3 className="text-2xl font-bold mb-3">Curious & Thoughtful Developer</h3>
-                      <p className={`${textSecondaryClass} leading-relaxed`}>
+                      <h3 className="text-lg font-bold mb-2">Curious & Thoughtful Developer</h3>
+                      <p className={`${textSecondaryClass} leading-relaxed text-sm`}>
                         I'm passionate about understanding how systems work and why decisions are made. I focus on building solutions that are scalable, maintainable, and sustainable, not just quick fixes.
                       </p>
                     </div>
                   </div>
                 </div>
-              )}
 
-              {activeAboutTab === 1 && (
-                <div className="animate-slide-up space-y-4">
-                  <div className="flex items-start gap-4">
+                <div className={`p-6 rounded-lg border transition-all duration-300 ${isDark
+                  ? 'bg-slate-700/30 border-slate-600/50'
+                  : 'bg-slate-200/30 border-slate-400/50'
+                  }`}>
+                  <div className="flex flex-col items-center text-center gap-4">
                     <span className="text-4xl">🤝</span>
                     <div>
-                      <h3 className="text-2xl font-bold mb-3">Collaborative & Growth-Oriented</h3>
-                      <p className={`${textSecondaryClass} leading-relaxed`}>
+                      <h3 className="text-lg font-bold mb-2">Collaborative & Growth-Oriented</h3>
+                      <p className={`${textSecondaryClass} leading-relaxed text-sm`}>
                         I thrive in environments where I can learn from others and contribute meaningfully, sharing knowledge and mentoring where I can. Growing together is more rewarding than growing alone.
                       </p>
                     </div>
                   </div>
                 </div>
-              )}
 
-              {activeAboutTab === 2 && (
-                <div className="animate-slide-up space-y-4">
-                  <div className="flex items-start gap-4">
+                <div className={`p-6 rounded-lg border transition-all duration-300 ${isDark
+                  ? 'bg-slate-700/30 border-slate-600/50'
+                  : 'bg-slate-200/30 border-slate-400/50'
+                  }`}>
+                  <div className="flex flex-col items-center text-center gap-4">
                     <span className="text-4xl">∞</span>
                     <div>
-                      <h3 className="text-2xl font-bold mb-3">Continuous Learner</h3>
-                      <p className={`${textSecondaryClass} leading-relaxed`}>
+                      <h3 className="text-lg font-bold mb-2">Continuous Learner</h3>
+                      <p className={`${textSecondaryClass} leading-relaxed text-sm`}>
                         I'm always exploring new technologies, frameworks, and approaches—whether it's AI/ML, cloud-native patterns, or modern microservices design. I see learning as a continuous journey that shapes better solutions and better engineers.
                       </p>
                     </div>
                   </div>
                 </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Education & Location */}
-        <section className="py-12 px-4">
-          <div className="max-w-3xl mx-auto grid md:grid-cols-2 gap-8 animate-slide-up">
-            <div className="flex flex-col items-center text-center">
-              <p className="text-3xl mb-3">🎓</p>
-              <h3 className="text-xl font-bold mb-2">Education</h3>
-              <p className={`${textSecondaryClass} italic`}>B.E. in Electronics & Communication (Class of 2009) </p>
-              <p className={textTertiaryClass}>RVSCET/Anna Univ, Tamil Nadu, India</p>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <p className="text-3xl mb-3">📍</p>
-              <h3 className="text-xl font-bold mb-2">Location</h3>
-              <p className={textSecondaryClass}>CT, USA</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Paths Travelled */}
-        <section className="py-20 px-4 animate-slide-up">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">Paths Travelled</h2>
-            <div className="space-y-8">
-              <div className="flex gap-6">
-                <div className="flex flex-col items-center">
-                  <div className="w-4 h-4 bg-blue-400 rounded-full mt-2"></div>
-                  <div className="w-1 h-32 bg-gradient-to-b from-blue-400 to-purple-400"></div>
-                </div>
-                <div className="pb-8">
-                  <h3 className="text-xl font-bold text-blue-400 mb-2">Starting Out (2014 - 2017)</h3>
-                  <p className={textTertiaryClass}>
-                    Started my career with <span className="text-blue-400 font-bold">Mphasis</span> (India), where I built my foundation working close to databases and core insurance systems—developing Oracle-based applications, resolving production issues,
-                    and learning how real-world systems behave under pressure. Early exposure to automation and RPA sparked my interest in making processes simpler and more reliable.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="flex flex-col items-center">
-                  <div className="w-4 h-4 bg-purple-400 rounded-full mt-2"></div>
-                  <div className="w-1 h-32 bg-gradient-to-b from-purple-400 to-pink-400"></div>
-                </div>
-                <div className="pb-8">
-                  <h3 className="text-xl font-bold text-purple-400 mb-2">Growing (2018 - 2023)</h3>
-                  <p className={textTertiaryClass}>
-                    Transitioned into data and platform engineering, building BI solutions and later moving into backend development. Worked across large enterprise systems,
-                    collaborating with business and technical teams, and learning that clean code, documentation, and system clarity matter as much as features.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-6">
-                <div className="flex flex-col items-center">
-                  <div className="w-4 h-4 bg-pink-400 rounded-full mt-2"></div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-pink-400 mb-2">Now (2024 & beyond)</h3>
-                  <p className={textTertiaryClass}>
-                    Focused on modernizing enterprise platforms using microservices, APIs, and cloud-native patterns. I design scalable solutions, lead technical initiatives, mentor teams, and spend time understanding the why behind architectural decisions.
-                    Recently joined <b className="text-purple-500">Aetna</b> <b className="text-red-500">CVS</b> , and I'm excited to keep learning and growing with this team.
-                  </p>
-                </div>
               </div>
             </div>
-          </div>
-        </section>
 
-
-
-
-
-        {/* Things I Can Help With (grouped) */}
-        <section className="py-16 px-4 animate-slide-up">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4 text-center">
-              Things I Can Help With
-            </h2>
-            <p className={`${textSecondaryClass} text-center mb-8`}>
-              Not an exhaustive list — just areas where I’m usually happy to jump in, pair, or help unblock things.
-            </p>
-
-            {[
-              {
-                category: 'Backend',
-                skills: [
-                  { label: 'Java', icon: '☕', color: 'text-amber-500' },
-                  { label: 'Spring Boot', icon: '🌱', color: 'text-green-500' },
-                  { label: 'REST APIs', icon: '🔗', color: 'text-sky-500' },
-                  { label: 'Microservices', icon: '🧱', color: 'text-indigo-500' },
-                  { label: 'System Design', icon: '🧠', color: 'text-purple-500' },
-                  { label: 'API Integrations', icon: '🔌', color: 'text-cyan-500' },
-                ]
-              },
-              {
-                category: 'Data & Databases',
-                skills: [
-                  { label: 'Databases (SQL)', icon: '🗄️', color: 'text-emerald-500' },
-                  { label: 'NoSQL', icon: '📦', color: 'text-teal-500' },
-                  { label: 'Data Modeling', icon: '📐', color: 'text-teal-500' },
-                  { label: 'Efficient Queries', icon: '⚡', color: 'text-yellow-500' },
-                ]
-              },
-              {
-                category: 'Cloud & Frontend',
-                skills: [
-                  { label: 'Cloud (AWS)', icon: '☁️', color: 'text-blue-500' },
-                  { label: 'React (basic)', icon: '⚛️', color: 'text-sky-400' },
-                  { label: 'Debugging & Reviews', icon: '🛠️', color: 'text-rose-500' }
-                ]
-              }
-            ].map(group => (
-              <div key={group.category} className="mb-6">
-                <h3 className={`font-semibold mb-2 text-center ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  {group.category}
-                </h3>
-                <div className="flex flex-wrap justify-center gap-3">
-                  {group.skills.map(({ label, icon, color }) => (
-                    <span
-                      key={label}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-all
-                ${isDark
-                          ? 'border-slate-600 text-slate-300 hover:border-slate-500'
-                          : 'border-slate-400 text-slate-700 hover:border-slate-500'
-                        }`}
-                    >
-                      <span className={`${color}`} role="img" aria-label={label}>{icon}</span>
-                      <span>{label}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-
-        {/* Reach Me Out For */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
-          <div className="max-w-3xl mx-auto text-center animate-slide-up">
-            <h2 className="text-4xl font-bold mb-8">Reach Me Out For</h2>
-            <div className="flex flex-wrap justify-center gap-3">
-              <span className={`px-6 py-3 ${isDark ? 'bg-blue-500/20 border-blue-400/30' : 'bg-blue-300/30 border-blue-600/30'} border rounded-full`}>🚀 Technical discussions</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-purple-500/20 border-purple-400/30' : 'bg-purple-300/30 border-purple-600/30'} border rounded-full`}>🤝 Collaboration</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-pink-500/20 border-pink-400/30' : 'bg-pink-300/30 border-pink-600/30'} border rounded-full`}>📚 Knowledge sharing</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-emerald-500/20 border-emerald-400/30' : 'bg-emerald-300/30 border-emerald-600/30'} border rounded-full`}>☕ Coffee chats</span>
-              <span className={`px-6 py-3 ${isDark ? 'bg-amber-500/20 border-amber-400/30' : 'bg-amber-300/30 border-amber-600/30'} border rounded-full`}>💡 New ideas</span>
+            {/* Career Progression */}
+            <div>
+              <CareerProgression isDark={isDark} />
             </div>
           </div>
         </section>
 
-        {/* User Manual */}
-        <section className="py-20 px-4 animate-slide-up">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-8 text-center">User Manual — Working With Me</h2>
-            <div className="grid md:grid-cols-2 gap-8">
+
+
+
+
+        {/* Things I Can Help With & Reach Me Out For - Side by Side */}
+        <section id="skills" className={`py-20 px-4 ${sectionBgClass} animate-slide-up`}>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {/* Things I Can Help With */}
               <div>
-                <h3 className={`text-xl font-bold ${isDark ? 'text-green-400' : 'text-green-600'} mb-4`}>✅ Do's</h3>
-                <ul className={`space-y-3 ${textSecondaryClass}`}>
-                  <li className="flex gap-3">
-                    <span className={isDark ? 'text-green-400' : 'text-green-600'}>🗣</span>
-                    <span>Ask questions anytime — I'm happy to clarify or brainstorm.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className={isDark ? 'text-green-400' : 'text-green-600'}>✉️</span>
-                    <span>Give direct feedback — constructive feedback is always appreciated.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className={isDark ? 'text-green-400' : 'text-green-600'}>💡</span>
-                    <span>Jump in with ideas — collaboration and shared input are welcome.</span>
-                  </li>
-                </ul>
+                <h2 className="text-3xl font-bold mb-4 text-center md:text-left">
+                  Things I Can Help With
+                </h2>
+                <p className={`${textSecondaryClass} text-center md:text-left mb-8 text-sm`}>
+                  Not an exhaustive list — just areas where I'm usually happy to jump in, pair, or help unblock things.
+                </p>
+
+                {[
+                  {
+                    category: 'Backend',
+                    skills: [
+                      { label: 'Java', icon: '☕', color: 'text-amber-500' },
+                      { label: 'Spring Boot', icon: '🌱', color: 'text-green-500' },
+                      { label: 'REST APIs', icon: '🔗', color: 'text-sky-500' },
+                      { label: 'Microservices', icon: '🧱', color: 'text-indigo-500' },
+                      { label: 'System Design', icon: '🧠', color: 'text-purple-500' },
+                      { label: 'API Integrations', icon: '🔌', color: 'text-cyan-500' },
+                    ]
+                  },
+                  {
+                    category: 'Data & Databases',
+                    skills: [
+                      { label: 'Databases (SQL)', icon: '🗄️', color: 'text-emerald-500' },
+                      { label: 'NoSQL', icon: '📦', color: 'text-teal-500' },
+                      { label: 'Data Modeling', icon: '📐', color: 'text-teal-500' },
+                      { label: 'Efficient Queries', icon: '⚡', color: 'text-yellow-500' },
+                    ]
+                  },
+                  {
+                    category: 'Cloud & Frontend',
+                    skills: [
+                      { label: 'Cloud (AWS)', icon: '☁️', color: 'text-blue-500' },
+                      { label: 'React (basic)', icon: '⚛️', color: 'text-sky-400' },
+                      { label: 'Debugging & Reviews', icon: '🛠️', color: 'text-rose-500' }
+                    ]
+                  }
+                ].map(group => (
+                  <div key={group.category} className="mb-6">
+                    <h3 className={`font-semibold mb-2 text-center md:text-left ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                      {group.category}
+                    </h3>
+                    <div className="flex flex-wrap gap-3">
+                      {group.skills.map(({ label, icon, color }) => (
+                        <span
+                          key={label}
+                          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border transition-all
+                    ${isDark
+                              ? 'border-slate-600 text-slate-300 hover:border-slate-500'
+                              : 'border-slate-400 text-slate-700 hover:border-slate-500'
+                            }`}
+                        >
+                          <span className={`${color}`} role="img" aria-label={label}>{icon}</span>
+                          <span>{label}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
+
+              {/* Reach Me Out For */}
               <div>
-                <h3 className={`text-xl font-bold ${isDark ? 'text-amber-400' : 'text-amber-600'} mb-4`}>⚡ Notes</h3>
-                <ul className={`space-y-3 ${textSecondaryClass}`}>
-                  <li className="flex gap-3">
-                    <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>👂</span>
-                    <span>I like to listen first and then contribute once I have clarity.</span>
-                  </li>
-                  <li className="flex gap-3">
-                    <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>⏳</span>
-                    <span>Async updates work great for me, but I’m always happy to sync when something’s urgent.</span>
-                  </li>
-                </ul>
+                <h2 className="text-3xl font-bold mb-8 text-center md:text-left">Reach Me Out For</h2>
+                <div className="flex flex-wrap gap-3">
+                  <span className={`px-6 py-3 ${isDark ? 'bg-blue-500/20 border-blue-400/30' : 'bg-blue-300/30 border-blue-600/30'} border rounded-full`}>🚀 Technical discussions</span>
+                  <span className={`px-6 py-3 ${isDark ? 'bg-purple-500/20 border-purple-400/30' : 'bg-purple-300/30 border-purple-600/30'} border rounded-full`}>🤝 Collaboration</span>
+                  <span className={`px-6 py-3 ${isDark ? 'bg-pink-500/20 border-pink-400/30' : 'bg-pink-300/30 border-pink-600/30'} border rounded-full`}>📚 Knowledge sharing</span>
+                  <span className={`px-6 py-3 ${isDark ? 'bg-emerald-500/20 border-emerald-400/30' : 'bg-emerald-300/30 border-emerald-600/30'} border rounded-full`}>☕ Coffee chats</span>
+                  <span className={`px-6 py-3 ${isDark ? 'bg-amber-500/20 border-amber-400/30' : 'bg-amber-300/30 border-amber-600/30'} border rounded-full`}>💡 New ideas</span>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Things I Enjoy */}
-        <section className="py-20 px-4 animate-slide-up">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">
-              Things I Enjoy (Outside the Day Job)
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div
-                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
-                  }`}
-              >
-                <p className="text-2xl mb-3">☕</p>
-                <h3 className="font-bold mb-2">Good coffee & slow conversations</h3>
-                <p className={`${textTertiaryClass} text-sm`}>
-                  I enjoy unstructured chats over coffee—usually where the best ideas and
-                  stories surface.
-                </p>
+        {/* User Manual & Fun Facts - Side by Side */}
+        <section id="user-manual" className={`py-20 px-4 ${sectionBgClass} animate-slide-up`}>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {/* User Manual */}
+              <div>
+                <h2 className="text-3xl font-bold mb-8 text-center md:text-left">User Manual — Working With Me</h2>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className={`text-xl font-bold ${isDark ? 'text-green-400' : 'text-green-600'} mb-4`}>✅ Do's</h3>
+                    <ul className={`space-y-3 ${textSecondaryClass}`}>
+                      <li className="flex gap-3">
+                        <span className={isDark ? 'text-green-400' : 'text-green-600'}>🗣</span>
+                        <span>Ask questions anytime — I'm happy to clarify or brainstorm.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className={isDark ? 'text-green-400' : 'text-green-600'}>✉️</span>
+                        <span>Give direct feedback — constructive feedback is always appreciated.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className={isDark ? 'text-green-400' : 'text-green-600'}>💡</span>
+                        <span>Jump in with ideas — collaboration and shared input are welcome.</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className={`text-xl font-bold ${isDark ? 'text-amber-400' : 'text-amber-600'} mb-4`}>⚡ Notes</h3>
+                    <ul className={`space-y-3 ${textSecondaryClass}`}>
+                      <li className="flex gap-3">
+                        <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>👂</span>
+                        <span>I like to listen first and then contribute once I have clarity.</span>
+                      </li>
+                      <li className="flex gap-3">
+                        <span className={isDark ? 'text-amber-400' : 'text-amber-600'}>⏳</span>
+                        <span>Async updates work great for me, but I'm always happy to sync when something's urgent.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
 
-              <div
-                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
-                  }`}
-              >
-                <p className="text-2xl mb-3">🎵</p>
-                <h3 className="font-bold mb-2">Music as a reset button</h3>
-                <p className={`${textTertiaryClass} text-sm`}>
-                  Music helps me unwind, refocus, and occasionally disappear into my own
-                  thoughts.
-                </p>
-              </div>
+              {/* Fun Facts */}
+              <div>
+                <h2 className="text-3xl font-bold mb-8 text-center md:text-left">Fun Facts</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  {[
+                    {
+                      id: 'fact-1',
+                      icon: '👤',
+                      text: "I was named after <span className='font-semibold text-blue-400'>Nelson Mandela</span>—still working on the legacy part.",
+                      color: 'blue'
+                    },
+                    {
+                      id: 'fact-2',
+                      icon: '📚',
+                      text: "I'm an avid reader and believe good books sharpen both <span className='font-semibold text-purple-400'>empathy</span> and <span className='font-semibold text-purple-400'>engineering judgment</span>.",
+                      color: 'purple'
+                    },
+                    {
+                      id: 'fact-3',
+                      icon: '🎵',
+                      text: "I listen to a lot of music—background scores and playlists are my preferred <span className='font-semibold text-pink-400'>debugging companions</span>.",
+                      color: 'pink'
+                    },
+                    {
+                      id: 'fact-4',
+                      icon: '☕',
+                      text: "Good coffee & slow conversations—I enjoy unstructured chats over coffee, usually where the best <span className='font-semibold text-amber-400'>ideas and stories</span> surface.",
+                      color: 'amber'
+                    }
+                  ].map((fact) => {
+                    const colorClasses = {
+                      blue: { front: isDark ? 'border-blue-400/20' : 'border-blue-600/20', text: isDark ? 'text-blue-300' : 'text-blue-600', bg: 'bg-blue-400/10' },
+                      purple: { front: isDark ? 'border-purple-400/20' : 'border-purple-600/20', text: isDark ? 'text-purple-300' : 'text-purple-600', bg: 'bg-purple-400/10' },
+                      pink: { front: isDark ? 'border-pink-400/20' : 'border-pink-600/20', text: isDark ? 'text-pink-300' : 'text-pink-600', bg: 'bg-pink-400/10' },
+                      amber: { front: isDark ? 'border-amber-400/20' : 'border-amber-600/20', text: isDark ? 'text-amber-300' : 'text-amber-600', bg: 'bg-amber-400/10' }
+                    }
+                    const colors = colorClasses[fact.color as keyof typeof colorClasses]
 
-              <div
-                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
-                  }`}
-              >
-                <p className="text-2xl mb-3">🚶</p>
-                <h3 className="font-bold mb-2">Long walks</h3>
-                <p className={`${textTertiaryClass} text-sm`}>
-                  Walking helps me clear my head—some of my best thinking happens on foot.
-                </p>
-              </div>
-
-              <div
-                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
-                  }`}
-              >
-                <p className="text-2xl mb-3">📚</p>
-                <h3 className="font-bold mb-2">Reading (not just tech)</h3>
-                <p className={`${textTertiaryClass} text-sm`}>
-                  I enjoy reading a mix of technology, ideas, and anything that explains
-                  how people and systems work.
-                </p>
-              </div>
-
-              <div
-                className={`p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600' : 'border-slate-400'
-                  } md:col-span-2 md:w-1/2 md:mx-auto`}
-              >
-                <p className="text-2xl mb-3">🧩</p>
-                <h3 className="font-bold mb-2">Puzzles & patterns</h3>
-                <p className={`${textTertiaryClass} text-sm`}>
-                  I like noticing patterns—whether in problems, music, or everyday life.
-                </p>
+                    return (
+                      <div
+                        key={fact.id}
+                        className={`flashcard h-32 ${funFactFlipped[fact.id] ? 'flipped' : ''}`}
+                        onClick={() => setFunFactFlipped(prev => ({ ...prev, [fact.id]: !prev[fact.id] }))}
+                      >
+                        <div className="flashcard-inner">
+                          <div className={`flashcard-front ${cardBgClass} rounded-lg border ${colors.front} shadow-lg flex items-center justify-center cursor-pointer`}>
+                            <div className="text-5xl">{fact.icon}</div>
+                          </div>
+                          <div className={`flashcard-back ${cardBgClass} rounded-lg border ${colors.front} shadow-lg p-4 flex items-center justify-center cursor-pointer ${colors.bg}`}>
+                            <p
+                              className={`${textSecondaryClass} text-center text-sm md:text-base`}
+                              dangerouslySetInnerHTML={{ __html: fact.text }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-
-        {/* Excited About */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
-          <div className="max-w-3xl mx-auto animate-slide-up">
-            <h2 className="text-4xl font-bold mb-12 text-center">Excited About</h2>
-            <div className="space-y-4">
-              <div className={`p-6 ${isDark ? 'bg-gradient-to-r from-blue-500/10 to-blue-500/5 border-blue-400/30' : 'bg-gradient-to-r from-blue-300/20 to-blue-200/10 border-blue-600/30'} rounded-lg border`}>
-                <h3 className={`font-bold ${isDark ? 'text-blue-300' : 'text-blue-700'} mb-2`}>• Learning how this team makes decisions</h3>
-                <p className={textTertiaryClass}>Understanding your decision-making processes and contributing to them.</p>
-              </div>
-              <div className={`p-6 ${isDark ? 'bg-gradient-to-r from-purple-500/10 to-purple-500/5 border-purple-400/30' : 'bg-gradient-to-r from-purple-300/20 to-purple-200/10 border-purple-600/30'} rounded-lg border`}>
-                <h3 className={`font-bold ${isDark ? 'text-purple-300' : 'text-purple-700'} mb-2`}>• Improving documentation & processes</h3>
-                <p className={textTertiaryClass}>Making things clearer, faster, and more efficient for everyone.</p>
-              </div>
-              <div className={`p-6 ${isDark ? 'bg-gradient-to-r from-pink-500/10 to-pink-500/5 border-pink-400/30' : 'bg-gradient-to-r from-pink-300/20 to-pink-200/10 border-pink-600/30'} rounded-lg border`}>
-                <h3 className={`font-bold ${isDark ? 'text-pink-300' : 'text-pink-700'} mb-2`}>• Building things that last</h3>
-                <p className={textTertiaryClass}>Creating solutions that are maintainable, scalable, and impact-driven.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-
-
-
-        {/* How I Work */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-4xl font-bold mb-12 text-center">How I Work</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div
-                className={`flashcard h-48 ${flippedCards['work-1'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-1')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-blue-400/20' : 'border-blue-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">🧠</p>
-                    <h3 className={`font-bold ${isDark ? 'text-blue-300' : 'text-blue-600'}`}>I ask why before how</h3>
+        {/* Excited About & How I Work - Side by Side */}
+        <section id="excited" className={`py-20 px-4 ${sectionBgClass}`}>
+          <div className="max-w-6xl mx-auto animate-slide-up">
+            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+              {/* Excited About */}
+              <div>
+                <h2 className="text-3xl font-bold mb-8 text-center md:text-left">Excited About</h2>
+                <div className="space-y-4">
+                  <div className={`p-6 ${isDark ? 'bg-slate-700/20 border-slate-600/30' : 'bg-slate-200/30 border-slate-400/30'} rounded-lg border`}>
+                    <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'} mb-2`}>• Learning how this team makes decisions</h3>
+                    <p className={textTertiaryClass}>Understanding your decision-making processes and contributing to them.</p>
                   </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-blue-400/20' : 'border-blue-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>Understanding the problem deeply leads to better, longer-lasting solutions.</p>
+                  <div className={`p-6 ${isDark ? 'bg-slate-700/20 border-slate-600/30' : 'bg-slate-200/30 border-slate-400/30'} rounded-lg border`}>
+                    <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'} mb-2`}>• Improving documentation & processes</h3>
+                    <p className={textTertiaryClass}>Making things clearer, faster, and more efficient for everyone.</p>
+                  </div>
+                  <div className={`p-6 ${isDark ? 'bg-slate-700/20 border-slate-600/30' : 'bg-slate-200/30 border-slate-400/30'} rounded-lg border`}>
+                    <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'} mb-2`}>• Building things that last</h3>
+                    <p className={textTertiaryClass}>Creating solutions that are maintainable, scalable, and impact-driven.</p>
                   </div>
                 </div>
               </div>
 
-              <div
-                className={`flashcard h-48 ${flippedCards['work-2'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-2')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-purple-400/20' : 'border-purple-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">📝</p>
-                    <h3 className={`font-bold ${isDark ? 'text-purple-300' : 'text-purple-600'}`}>I value clarity</h3>
+              {/* How I Work */}
+              <div>
+                <h2 className="text-3xl font-bold mb-8 text-center md:text-left">How I Work</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <div
+                    className={`flashcard h-40 ${flippedCards['work-1'] ? 'flipped' : ''}`}
+                    onClick={() => toggleFlip('work-1')}
+                  >
+                    <div className="flashcard-inner">
+                      <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className="text-lg mb-2">🧠</p>
+                        <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>I ask why before how</h3>
+                      </div>
+                      <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className={`${textTertiaryClass} text-sm`}>Understanding the problem deeply leads to better, longer-lasting solutions.</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-purple-400/20' : 'border-purple-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>Clear APIs, documentation, and ownership reduce friction and scale better over time.</p>
-                  </div>
-                </div>
-              </div>
 
-              <div
-                className={`flashcard h-48 ${flippedCards['work-3'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-3')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-pink-400/20' : 'border-pink-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">⚖️</p>
-                    <h3 className={`font-bold ${isDark ? 'text-pink-300' : 'text-pink-600'}`}>I balance pragmatism with quality</h3>
+                  <div
+                    className={`flashcard h-40 ${flippedCards['work-2'] ? 'flipped' : ''}`}
+                    onClick={() => toggleFlip('work-2')}
+                  >
+                    <div className="flashcard-inner">
+                      <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className="text-lg mb-2">📝</p>
+                        <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>I value clarity</h3>
+                      </div>
+                      <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className={`${textTertiaryClass} text-sm`}>Clear APIs, documentation, and ownership reduce friction and scale better over time.</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-pink-400/20' : 'border-pink-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>I aim for solutions that are robust, maintainable, and delivered at the right time.</p>
-                  </div>
-                </div>
-              </div>
 
-              <div
-                className={`flashcard h-48 ${flippedCards['work-4'] ? 'flipped' : ''}`}
-                onClick={() => toggleFlip('work-4')}
-              >
-                <div className="flashcard-inner">
-                  <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-emerald-400/20' : 'border-emerald-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className="text-lg mb-2">📣</p>
-                    <h3 className={`font-bold ${isDark ? 'text-emerald-300' : 'text-emerald-600'}`}>I welcome feedback</h3>
+                  <div
+                    className={`flashcard h-40 ${flippedCards['work-3'] ? 'flipped' : ''}`}
+                    onClick={() => toggleFlip('work-3')}
+                  >
+                    <div className="flashcard-inner">
+                      <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className="text-lg mb-2">⚖️</p>
+                        <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>I balance pragmatism with quality</h3>
+                      </div>
+                      <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className={`${textTertiaryClass} text-sm`}>I aim for solutions that are robust, maintainable, and delivered at the right time.</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-emerald-400/20' : 'border-emerald-600/20'} flex flex-col items-center justify-center text-center`}>
-                    <p className={`${textTertiaryClass} text-sm`}>Early conversations and course corrections are always better than late surprises.</p>
+
+                  <div
+                    className={`flashcard h-40 ${flippedCards['work-4'] ? 'flipped' : ''}`}
+                    onClick={() => toggleFlip('work-4')}
+                  >
+                    <div className="flashcard-inner">
+                      <div className={`flashcard-front p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className="text-lg mb-2">📣</p>
+                        <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>I welcome feedback</h3>
+                      </div>
+                      <div className={`flashcard-back p-6 ${cardBgClass} rounded-lg border ${isDark ? 'border-slate-600/30' : 'border-slate-400/30'} flex flex-col items-center justify-center text-center`}>
+                        <p className={`${textTertiaryClass} text-sm`}>Early conversations and course corrections are always better than late surprises.</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -694,7 +647,7 @@ export default function App() {
         </section>
 
         {/* Built With */}
-        <section className={`py-20 px-4 ${sectionBgClass}`}>
+        <section id="built-with" className={`py-20 px-4 ${sectionBgClass}`}>
           <div className="max-w-3xl mx-auto text-center animate-slide-up">
             <h2 className="text-3xl font-bold mb-6">Built With ✨</h2>
             <div className="space-y-3">
@@ -719,16 +672,31 @@ export default function App() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 px-4 text-center animate-slide-up">
-          <h2 className="text-3xl font-bold mb-6">Looking forward to working with you! 🚀</h2>
-          <p className={`${textTertiaryClass} mb-8 max-w-2xl mx-auto`}>
-            Let's connect, collaborate, and build something meaningful together. Feel free to reach out anytime!
-          </p>
-          <button className="px-8 py-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition transform hover:scale-105">
-            Get in Touch
-          </button>
-        </section>
+
+        {/* Scroll to Next Section Button */}
+        <button
+          onClick={scrollToNextSection}
+          className={`fixed bottom-8 right-8 z-50 w-14 h-14 rounded-full shadow-lg transition-all duration-300 hover:scale-110 flex items-center justify-center ${isDark
+            ? 'bg-slate-700 text-white hover:shadow-slate-700/50'
+            : 'bg-slate-600 text-white hover:shadow-slate-600/50'
+            }`}
+          aria-label="Scroll to next section"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            />
+          </svg>
+        </button>
 
         {/* GitHub Link Button */}
         <a

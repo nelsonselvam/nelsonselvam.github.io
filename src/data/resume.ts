@@ -75,3 +75,50 @@ export const education = {
   school: "RVS College of Engineering & Technology (Anna University)",
   details: "2009–2013 · CGPA 8.73 · Summa cum laude"
 }
+
+export const careerMilestones = [
+  {
+    title: "Graduation",
+    description: "B.E. — Electronics & Communication",
+    date: "May 2013",
+    location: "India",
+    icon: "🎓",
+    type: "education"
+  },
+  {
+    title: "Joined Mphasis",
+    description: "DB & Analytics — Associate Software Engineer",
+    date: "May 2014",
+    location: "India",
+    icon: "💼",
+    type: "career",
+    details: "Oracle Forms/Reports, SQL/PLSQL, Database maintenance"
+  },
+  {
+    title: "Backend Development",
+    description: "Software Engineer — BI & Backend",
+    date: "Oct 2016",
+    location: "India",
+    icon: "⚙️",
+    type: "transition",
+    details: "Tableau, Power BI, Backend development"
+  },
+  {
+    title: "Moved Onsite",
+    description: "Senior Software Engineer",
+    date: "Mar 2019",
+    location: "USA",
+    icon: "🌎",
+    type: "transition",
+    details: "Microservices, Spring Boot, AWS"
+  },
+  {
+    title: "Joined CVS Aetna",
+    description: "Senior Software Engineer",
+    date: "Present",
+    location: "USA",
+    icon: "🚀",
+    type: "career",
+    details: "Continuing to build scalable solutions"
+  }
+]
