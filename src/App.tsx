@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Nav from './components/Nav'
-import TypingBanner from './components/TypingBanner'
+import CodeExecutionWelcome from './components/CodeExecutionWelcome'
 import CareerProgression from './components/CareerProgression'
 
 interface FloatingEmoji {
@@ -61,7 +61,7 @@ export default function App() {
     }
   }
 
-  const emojisPool = ['💻', '🎵', '📚', '☕', '⚙️', '🔧', '🚀', '🧠', '📝', '🎯', '💡', '🔬']
+  const emojisPool = ['☁️', '⚛️', '🔧', '🚀', '📊', '🔐', '⚡', '🎯', '💻', '🌐', '📡', '🔮']
 
   // Randomize emojis with unique positions on mount
   useEffect(() => {
@@ -82,8 +82,8 @@ export default function App() {
   }, [])
 
   const bgClass = isDark
-    ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white'
-    : 'bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50 text-slate-900'
+    ? 'bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950 text-white'
+    : 'bg-gradient-to-br from-indigo-50 via-purple-50 to-slate-50 text-slate-900'
 
   const sectionBgClass = isDark ? 'bg-slate-800/50' : 'bg-slate-200/50'
   const cardBgClass = isDark ? 'bg-slate-700/50' : 'bg-slate-300/30'
@@ -235,7 +235,7 @@ export default function App() {
       `}</style>
 
       {/* Floating Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-10">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none opacity-5">
         {floatingElements.map((element) => (
           <div
             key={element.id}
@@ -243,7 +243,8 @@ export default function App() {
             style={{
               top: `${element.top}%`,
               left: `${element.left}%`,
-              animationDelay: `${element.delay}s`
+              animationDelay: `${element.delay}s`,
+              filter: 'drop-shadow(0 0 10px rgba(99, 102, 241, 0.3))'
             }}
           >
             {element.emoji}
@@ -265,39 +266,76 @@ export default function App() {
         </button>
       </div>
 
-      <TypingBanner />
+      <CodeExecutionWelcome isDark={isDark} />
       <main className="overflow-hidden relative z-10">
         {/* Hero Section */}
-        <section id="hero" className="relative min-h-screen flex items-center justify-center px-4 -mt-20">
-          <div className="text-center space-y-6 max-w-3xl animate-fade-in-scale">
-            {/* Profile Image */}
+        <section id="hero" className="relative min-h-screen flex items-center justify-center px-4">
+          <div className="text-center space-y-8 max-w-4xl animate-fade-in-scale">
+            {/* Profile Image with Glow */}
             <div className="flex justify-center mb-8 animate-slide-up">
               <div
-                className={`profile-card w-32 h-32 md:w-40 md:h-40 ${profileFlipped ? 'flipped' : ''}`}
+                className={`profile-card w-40 h-40 md:w-48 md:h-48 ${profileFlipped ? 'flipped' : ''}`}
               >
                 <div className="profile-card-inner">
                   <div className="profile-front relative">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-secondary to-primary opacity-75 blur-xl animate-pulse-slow"></div>
                     <img
                       src="./images/profile.jpg"
                       alt="Nelson Selvam"
-                      className="w-full h-full rounded-full object-cover border-4 border-slate-400 shadow-lg hover:shadow-xl transition-shadow duration-300"
+                      className="relative w-full h-full rounded-full object-cover border-4 border-primary shadow-glow-lg hover:shadow-glow transition-all duration-500 animate-glow"
                     />
-                    <div className="absolute inset-0 rounded-full bg-slate-400 opacity-0 hover:opacity-5 transition-opacity duration-300"></div>
                   </div>
                   <div className="profile-back relative flex items-center justify-center">
-                    <div className="w-full h-full rounded-full border-4 border-slate-400 shadow-lg flex items-center justify-center text-4xl md:text-5xl bg-gradient-to-br from-slate-500 to-slate-600">
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary via-secondary to-primary opacity-75 blur-xl animate-pulse-slow"></div>
+                    <div className="relative w-full h-full rounded-full border-4 border-primary shadow-glow-lg flex items-center justify-center text-5xl md:text-6xl bg-gradient-to-br from-indigo-600 to-purple-600">
                       👨‍💻
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-slate-600 via-slate-700 to-slate-800 bg-clip-text text-transparent animate-slide-up">
-              Hey there! <span className="inline-block animate-wave">👋</span>
-            </h1>
-            <p className={`text-xl md:text-2xl ${textSecondaryClass} animate-slide-up`} style={{ animationDelay: '0.2s' }}>
-              I've been vibe coding lately and thought I'd pass the vibe along. This introduction is fully vibe coded.
-            </p>
+
+            {/* Main Heading */}
+            <div className="space-y-4">
+              <h1 className={`text-5xl md:text-7xl font-bold animate-slide-up ${isDark ? 'bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400' : 'bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600'} bg-clip-text text-transparent`}>
+                Nelson Selvam
+              </h1>
+              <p className={`text-2xl md:text-3xl font-semibold animate-slide-up ${isDark ? 'text-indigo-300' : 'text-indigo-700'}`} style={{ animationDelay: '0.1s' }}>
+                Senior Software Engineer
+              </p>
+              <p className={`text-lg md:text-xl ${textSecondaryClass} max-w-2xl mx-auto animate-slide-up`} style={{ animationDelay: '0.2s' }}>
+                Building scalable solutions with 10+ years of experience in microservices, cloud architecture, and team leadership
+              </p>
+            </div>
+
+            {/* Key Metrics Badges */}
+            <div className="flex flex-wrap justify-center gap-3 animate-slide-up" style={{ animationDelay: '0.3s' }}>
+              <span className={`px-4 py-2 rounded-full text-sm font-medium ${isDark ? 'glass-dark text-indigo-300' : 'glass text-indigo-700'} border ${isDark ? 'border-indigo-500/30' : 'border-indigo-400/30'}`}>
+                ⚡ 10+ Years Experience
+              </span>
+              <span className={`px-4 py-2 rounded-full text-sm font-medium ${isDark ? 'glass-dark text-cyan-300' : 'glass text-cyan-700'} border ${isDark ? 'border-cyan-500/30' : 'border-cyan-400/30'}`}>
+                ☁️ AWS Certified
+              </span>
+              <span className={`px-4 py-2 rounded-full text-sm font-medium ${isDark ? 'glass-dark text-purple-300' : 'glass text-purple-700'} border ${isDark ? 'border-purple-500/30' : 'border-purple-400/30'}`}>
+                🚀 Microservices Expert
+              </span>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap justify-center gap-4 pt-4 animate-slide-up" style={{ animationDelay: '0.4s' }}>
+              <a
+                href="#about"
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${isDark ? 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500' : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600'} text-white shadow-lg hover:shadow-glow`}
+              >
+                Learn More About Me
+              </a>
+              <a
+                href="#skills"
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 border-2 ${isDark ? 'border-indigo-500 text-indigo-300 hover:bg-indigo-500/10' : 'border-indigo-600 text-indigo-700 hover:bg-indigo-50'}`}
+              >
+                View Skills
+              </a>
+            </div>
           </div>
         </section>
 

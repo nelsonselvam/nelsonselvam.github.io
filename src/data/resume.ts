@@ -83,7 +83,8 @@ export const careerMilestones = [
     date: "May 2013",
     location: "India",
     icon: "🎓",
-    type: "education"
+    type: "education",
+    color: "indigo"
   },
   {
     title: "Joined Mphasis",
@@ -92,7 +93,9 @@ export const careerMilestones = [
     location: "India",
     icon: "💼",
     type: "career",
-    details: "Oracle Forms/Reports, SQL/PLSQL, Database maintenance"
+    details: "Oracle Forms/Reports, SQL/PLSQL, Database maintenance",
+    logo: "/images/logo_mphasis.jpg",
+    color: "cyan"
   },
   {
     title: "Backend Development",
@@ -101,7 +104,8 @@ export const careerMilestones = [
     location: "India",
     icon: "⚙️",
     type: "transition",
-    details: "Tableau, Power BI, Backend development"
+    details: "Tableau, Power BI, Backend development",
+    color: "purple"
   },
   {
     title: "Moved Onsite",
@@ -110,7 +114,8 @@ export const careerMilestones = [
     location: "USA",
     icon: "🌎",
     type: "transition",
-    details: "Microservices, Spring Boot, AWS"
+    details: "Microservices, Spring Boot, AWS",
+    color: "blue"
   },
   {
     title: "Joined CVS Aetna",
@@ -119,6 +124,8 @@ export const careerMilestones = [
     location: "USA",
     icon: "🚀",
     type: "career",
-    details: "Continuing to build scalable solutions"
+    details: "Continuing to build scalable solutions",
+    logo: "/images/logo_cvs.png",
+    color: "red"
   }
 ]
