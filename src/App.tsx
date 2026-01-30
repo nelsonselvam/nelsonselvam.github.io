@@ -18,6 +18,7 @@ export default function App() {
   const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({})
   const [profileFlipped, setProfileFlipped] = useState(false)
   const [funFactFlipped, setFunFactFlipped] = useState<Record<string, boolean>>({})
+  const [expandedStatus, setExpandedStatus] = useState<Record<string, boolean>>({})
 
   // Auto-flip profile picture at intervals
   useEffect(() => {
@@ -29,7 +30,7 @@ export default function App() {
   }, [])
 
   // Section IDs in order
-  const sectionIds = ['hero', 'about', 'career', 'skills', 'user-manual', 'excited', 'how-i-work', 'built-with', 'cta']
+  const sectionIds = ['hero', 'about', 'career', 'skills', 'user-manual', 'current-status', 'excited', 'how-i-work', 'built-with', 'cta']
 
   // Scroll to next section
   const scrollToNextSection = () => {
@@ -267,6 +268,7 @@ export default function App() {
       </div>
 
       <CodeExecutionWelcome isDark={isDark} />
+
       <main className="overflow-hidden relative z-10">
         {/* Hero Section */}
         <section id="hero" className="relative min-h-screen flex items-center justify-center px-4">
@@ -304,7 +306,7 @@ export default function App() {
                 Senior Software Engineer
               </p>
               <p className={`text-lg md:text-xl ${textSecondaryClass} max-w-2xl mx-auto animate-slide-up`} style={{ animationDelay: '0.2s' }}>
-                Building scalable solutions with 10+ years of experience in microservices, cloud architecture, and team leadership
+                10+ years of experience in the IT industry, including a strong background in the Insurance sector. For the past 5 years, I have focused on designing and implementing scalable microservices, backend APIs, and cloud-native architectures.
               </p>
             </div>
 
@@ -314,10 +316,10 @@ export default function App() {
                 ⚡ 10+ Years Experience
               </span>
               <span className={`px-4 py-2 rounded-full text-sm font-medium ${isDark ? 'glass-dark text-cyan-300' : 'glass text-cyan-700'} border ${isDark ? 'border-cyan-500/30' : 'border-cyan-400/30'}`}>
-                ☁️ AWS Certified
+                ☁️ Cloud Certified Developer
               </span>
               <span className={`px-4 py-2 rounded-full text-sm font-medium ${isDark ? 'glass-dark text-purple-300' : 'glass text-purple-700'} border ${isDark ? 'border-purple-500/30' : 'border-purple-400/30'}`}>
-                🚀 Microservices Expert
+                🏗️ Backend Architecture
               </span>
             </div>
 
@@ -403,9 +405,6 @@ export default function App() {
         </section>
 
 
-
-
-
         {/* Things I Can Help With & Reach Me Out For - Side by Side */}
         <section id="skills" className={`py-20 px-4 ${sectionBgClass} animate-slide-up`}>
           <div className="max-w-6xl mx-auto">
@@ -436,7 +435,7 @@ export default function App() {
                     skills: [
                       { label: 'Databases (SQL)', icon: '🗄️', color: 'text-emerald-500' },
                       { label: 'NoSQL', icon: '📦', color: 'text-teal-500' },
-                      { label: 'Data Modeling', icon: '📐', color: 'text-teal-500' },
+                      // { label: 'Data Modeling', icon: '📐', color: 'text-teal-500' },
                       { label: 'Efficient Queries', icon: '⚡', color: 'text-yellow-500' },
                     ]
                   },
@@ -447,7 +446,14 @@ export default function App() {
                       { label: 'React (basic)', icon: '⚛️', color: 'text-sky-400' },
                       { label: 'Debugging & Reviews', icon: '🛠️', color: 'text-rose-500' }
                     ]
-                  }
+                  },
+                  {
+                    category: 'BI',
+                    skills: [
+                      { label: 'Tableau', icon: '📊', color: 'text-indigo-400' },
+                      { label: 'Power BI', icon: '📊', color: 'text-indigo-400' },
+                    ]
+                  },
                 ].map(group => (
                   <div key={group.category} className="mb-6">
                     <h3 className={`font-semibold mb-2 text-center md:text-left ${isDark ? 'text-white' : 'text-slate-900'}`}>
@@ -592,6 +598,115 @@ export default function App() {
           </div>
         </section>
 
+        {/* My Current Status */}
+        <section id="current-status" className={`py-20 px-4 ${sectionBgClass} animate-slide-up`}>
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold mb-8 text-center">My Current Status</h2>
+
+            {/* All Status Cards in Grid */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Currently Listening To with Spotify Embed */}
+              <div
+                className={`p-6 rounded-xl border bg-gradient-to-br ${isDark
+                  ? 'from-cyan-500/20 to-blue-500/20 border-cyan-500/30'
+                  : 'from-cyan-100 to-blue-100 border-cyan-400/40'
+                  } transition-all duration-300 hover:shadow-lg`}
+              >
+                <div className="flex items-start gap-4 mb-3">
+                  <div className={`${isDark ? 'bg-cyan-500/20' : 'bg-cyan-200/50'} p-3 rounded-lg text-3xl flex-shrink-0`}>
+                    🎧
+                  </div>
+                  <div className="flex-1">
+                    <h3 className={`font-bold text-lg mb-2 ${isDark ? 'text-cyan-300' : 'text-cyan-700'}`}>
+                      Currently Listening To
+                    </h3>
+                    <p className={`${textSecondaryClass} text-sm leading-relaxed mb-3`}>
+                      Check out what I'm vibing to
+                    </p>
+                  </div>
+                </div>
+
+                {/* Compact Spotify Embed */}
+                <div className="overflow-hidden rounded-lg">
+                  <iframe
+                    style={{ borderRadius: '8px' }}
+                    src="https://open.spotify.com/embed/episode/5ESBS8xJyHY2thOnNm9dKV/video?utm_source=generator"
+                    width="100%"
+                    height="152"
+                    frameBorder="0"
+                    allowFullScreen
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    className="w-full"
+                  />
+                </div>
+              </div>
+
+              {/* Other Status Cards */}
+              {[
+                {
+                  id: 'status-2',
+                  icon: '📖',
+                  title: 'Currently Learning',
+                  content: (
+                    <ul className="space-y-2 mt-1">
+                      <li className="flex items-center gap-2"><span>🤖</span> Prompt Engineering</li>
+                      <li className="flex items-center gap-2"><span>⚙️</span> GH Actions & GitOps</li>
+                      <li className="flex items-center gap-2"><span>🛸</span> MCP & Antigravity</li>
+                    </ul>
+                  ),
+                  gradient: isDark
+                    ? 'from-emerald-500/20 to-green-500/20 border-emerald-500/30'
+                    : 'from-emerald-100 to-green-100 border-emerald-400/40',
+                  iconBg: isDark ? 'bg-emerald-500/20' : 'bg-emerald-200/50',
+                  textColor: isDark ? 'text-emerald-300' : 'text-emerald-700'
+                },
+                {
+                  id: 'status-3',
+                  icon: '📕',
+                  title: 'Currently Reading',
+                  content: 'Ikigai (生き甲斐): The Japanese Secret to a Long and Happy Life',
+                  gradient: isDark
+                    ? 'from-indigo-500/20 to-purple-500/20 border-indigo-500/30'
+                    : 'from-indigo-100 to-purple-100 border-indigo-400/40',
+                  iconBg: isDark ? 'bg-indigo-500/20' : 'bg-indigo-200/50',
+                  textColor: isDark ? 'text-indigo-300' : 'text-indigo-700'
+                },
+                {
+                  id: 'status-4',
+                  icon: '💼',
+                  title: 'Currently Working On',
+                  content: 'GKE Microservice Deployment, Legacy Batch Modernization',
+                  gradient: isDark
+                    ? 'from-rose-500/20 to-pink-500/20 border-rose-500/30'
+                    : 'from-rose-100 to-pink-100 border-rose-400/40',
+                  iconBg: isDark ? 'bg-rose-500/20' : 'bg-rose-200/50',
+                  textColor: isDark ? 'text-rose-300' : 'text-rose-700'
+                }
+              ].map((status) => (
+                <div
+                  key={status.id}
+                  className={`p-6 rounded-xl border bg-gradient-to-br ${status.gradient} transition-all duration-300 hover:scale-105 hover:shadow-lg`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`${status.iconBg} p-3 rounded-lg text-3xl flex-shrink-0`}>
+                      {status.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className={`font-bold text-lg mb-2 ${status.textColor}`}>
+                        {status.title}
+                      </h3>
+                      <p className={`${textSecondaryClass} text-sm leading-relaxed`}>
+                        {status.content}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Excited About & How I Work - Side by Side */}
         <section id="excited" className={`py-20 px-4 ${sectionBgClass}`}>
           <div className="max-w-6xl mx-auto animate-slide-up">
@@ -602,7 +717,7 @@ export default function App() {
                 <div className="space-y-4">
                   <div className={`p-6 ${isDark ? 'bg-slate-700/20 border-slate-600/30' : 'bg-slate-200/30 border-slate-400/30'} rounded-lg border`}>
                     <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'} mb-2`}>• Learning how this team makes decisions</h3>
-                    <p className={textTertiaryClass}>Understanding your decision-making processes and contributing to them.</p>
+                    <p className={textTertiaryClass}>Understanding decision-making processes and contributing to them.</p>
                   </div>
                   <div className={`p-6 ${isDark ? 'bg-slate-700/20 border-slate-600/30' : 'bg-slate-200/30 border-slate-400/30'} rounded-lg border`}>
                     <h3 className={`font-bold ${isDark ? 'text-slate-300' : 'text-slate-700'} mb-2`}>• Improving documentation & processes</h3>
@@ -682,7 +797,7 @@ export default function App() {
               </div>
             </div>
           </div>
-        </section>
+        </section >
 
         {/* Built With */}
         <section id="built-with" className={`py-20 px-4 ${sectionBgClass}`}>
@@ -690,14 +805,14 @@ export default function App() {
             <h2 className="text-3xl font-bold mb-6">Built With ✨</h2>
             <div className="space-y-3">
               <p className={textSecondaryClass}>
-                This introduction was <span className="font-bold">vibe coded</span> in <span className="font-bold">VS Code</span> with help from:
+                This introduction was <span className="font-bold">vibe coded</span> in <span className="font-bold">VS Code, Cursor & Antigravity</span> with help from:
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <span className={`px-4 py-2 ${isDark ? 'bg-slate-700/50' : 'bg-slate-300/30'} rounded-lg text-sm`}>
                   GitHub Copilot
                 </span>
                 <span className={`px-4 py-2 ${isDark ? 'bg-slate-700/50' : 'bg-slate-300/30'} rounded-lg text-sm`}>
-                  Claude Haiku 4.5
+                  Claude Haiku 4.5, Sonnet 4.5
                 </span>
                 <span className={`px-4 py-2 ${isDark ? 'bg-slate-700/50' : 'bg-slate-300/30'} rounded-lg text-sm`}>
                   React + Tailwind CSS
@@ -709,7 +824,6 @@ export default function App() {
             </div>
           </div>
         </section>
-
 
         {/* Scroll to Next Section Button */}
         <button

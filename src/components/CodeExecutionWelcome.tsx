@@ -209,7 +209,7 @@ export default function CodeExecutionWelcome({ isDark }: CodeExecutionWelcomePro
                             <div className="w-3 h-3 rounded-full bg-green-500"></div>
                         </div>
                         <span className={`ml-4 text-sm ${textClass} font-mono`}>
-                            {phase === 'hello' || phase === 'compilation' || phase === 'execution' ? 'Welcome.java' : phase === 'query' || phase === 'transition' ? 'database-query.sql' : phase === 'json' ? 'api-response.json' : phase === 'coffee' ? 'brewing-coffee.sh' : 'query-results'}
+                            {phase === 'hello' || phase === 'compilation' || phase === 'execution' ? 'Welcome.java' : phase === 'query' || phase === 'transition' ? 'database-query.sql' : phase === 'json' ? 'api-response.nelson' : phase === 'coffee' ? 'brewing-coffee.sh' : 'query-results'}
                         </span>
                         {canSkip && phase !== 'results' && phase !== 'coffee' && phase !== 'json' && (
                             <button
@@ -244,7 +244,7 @@ export default function CodeExecutionWelcome({ isDark }: CodeExecutionWelcomePro
                                         <span className="text-yellow-400">.</span>
                                         <span className="text-blue-400">println</span>
                                         <span className="text-yellow-400">(</span>
-                                        <span className="text-green-400">"Hello World!"</span>
+                                        <span className="text-green-400">"Hello Broker Commissions Team!"</span>
                                         <span className="text-yellow-400">)</span>;{'\n'}
                                         {'    }\n'}
                                         {'}'}
@@ -258,7 +258,7 @@ export default function CodeExecutionWelcome({ isDark }: CodeExecutionWelcomePro
                                         animate={{ opacity: 1, y: 0 }}
                                         className="mt-4 space-y-2"
                                     >
-                                        <div className="text-cyan-400">{'>javac Welcome.java'}</div>
+                                        <div className="text-cyan-400">{'> javac Welcome.java'}</div>
                                         <div className="text-slate-400 mt-1">Compiling...</div>
 
                                         {/* Compilation Success */}
@@ -282,7 +282,7 @@ export default function CodeExecutionWelcome({ isDark }: CodeExecutionWelcomePro
                                         className="mt-4 space-y-2"
                                     >
                                         <div className="text-cyan-400">{'> java -jar welcome.jar'}</div>
-                                        <div className="text-green-400 font-bold mt-1 text-lg">Hello World!</div>
+                                        <div className="text-green-400 font-bold mt-1 text-lg">Hello Broker Commissions Team!</div>
                                     </motion.div>
                                 )}
                             </div>
@@ -462,12 +462,12 @@ export default function CodeExecutionWelcome({ isDark }: CodeExecutionWelcomePro
                                         {visibleJsonLines >= 11 && '\n      '}{visibleJsonLines >= 11 && <span className="text-green-400">"AWS Certified AI Practitioner"</span>}{visibleJsonLines >= 11 && ','}
                                         {visibleJsonLines >= 12 && '\n      '}{visibleJsonLines >= 12 && <span className="text-green-400">"Azure AI Fundamentals"</span>}
                                         {visibleJsonLines >= 13 && '\n    '}]{visibleJsonLines >= 13 && ','}
-                                        {visibleJsonLines >= 14 && '\n    '}{visibleJsonLines >= 14 && <span className="text-cyan-400">"currently_reading"</span>}{visibleJsonLines >= 14 && ': '}{visibleJsonLines >= 14 && <span className="text-green-400">"The Pragmatic Programmer"</span>}{visibleJsonLines >= 14 && ','}
+                                        {visibleJsonLines >= 14 && '\n    '}{visibleJsonLines >= 14 && <span className="text-cyan-400">"currently_reading"</span>}{visibleJsonLines >= 14 && ': '}{visibleJsonLines >= 14 && <span className="text-green-400">"IKIGAI"</span>}{visibleJsonLines >= 14 && ','}
                                         {visibleJsonLines >= 15 && '\n    '}{visibleJsonLines >= 15 && <span className="text-cyan-400">"current_project"</span>}{visibleJsonLines >= 15 && ': '}{visibleJsonLines >= 15 && <span className="text-green-400">"Building this portfolio with React + AI"</span>}{visibleJsonLines >= 15 && ','}
-                                        {visibleJsonLines >= 16 && '\n    '}{visibleJsonLines >= 16 && <span className="text-cyan-400">"fun_fact"</span>}{visibleJsonLines >= 16 && ': '}{visibleJsonLines >= 16 && <span className="text-green-400">"Named after Nelson Mandela 🌟"</span>}{visibleJsonLines >= 16 && ','}
+                                        {/* {visibleJsonLines >= 16 && '\n    '}{visibleJsonLines >= 16 && <span className="text-cyan-400">"fun_fact"</span>}{visibleJsonLines >= 16 && ': '}{visibleJsonLines >= 16 && <span className="text-green-400">"Named after Nelson Mandela 🌟"</span>}{visibleJsonLines >= 16 && ','}
                                         {visibleJsonLines >= 17 && '\n    '}{visibleJsonLines >= 17 && <span className="text-cyan-400">"coffee_consumed_today"</span>}{visibleJsonLines >= 17 && ': '}{visibleJsonLines >= 17 && <span className="text-yellow-400">3</span>}{visibleJsonLines >= 17 && ','}
                                         {visibleJsonLines >= 18 && '\n    '}{visibleJsonLines >= 18 && <span className="text-cyan-400">"bugs_squashed_this_week"</span>}{visibleJsonLines >= 18 && ': '}{visibleJsonLines >= 18 && <span className="text-yellow-400">42</span>}
-                                        {visibleJsonLines >= 19 && '\n  }'}{visibleJsonLines >= 19 && ','}
+                                        {visibleJsonLines >= 19 && '\n  }'}{visibleJsonLines >= 19 && ','} */}
                                         {visibleJsonLines >= 20 && '\n  '}{visibleJsonLines >= 20 && <span className="text-cyan-400">"timestamp"</span>}{visibleJsonLines >= 20 && ': '}{visibleJsonLines >= 20 && <span className="text-green-400">"{new Date().toISOString()}"</span>}
                                         {visibleJsonLines >= 20 && '\n}'}
                                     </code>
