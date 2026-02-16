@@ -7,4 +7,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: process.env.VITE_BASE || '/',
+  server: {
+    host: 'localhost', // Use localhost instead of specific IP
+    port: 3000, // Use alternative port
+  },
 })
