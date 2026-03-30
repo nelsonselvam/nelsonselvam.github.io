@@ -619,9 +619,10 @@ export default function App() {
                       Currently Learning
                     </h3>
                     <ul className="space-y-2 mt-1">
+                      <li className="flex items-center gap-2"><span>🧠</span> Cloud Engineering with Google Cloud Platform</li>
+                      <li className="flex items-center gap-2"><span>🚀</span> Context & Prompt Engineering, MCP</li>
                       <li className="flex items-center gap-2"><span>🌊</span> Apache Airflow</li>
                       <li className="flex items-center gap-2"><span>🚀</span> GH Actions & GitOps</li>
-                      <li className="flex items-center gap-2"><span>🧠</span> Prompt Engineering, MCP</li>
                     </ul>
                   </div>
                 </div>
@@ -643,9 +644,9 @@ export default function App() {
                       Currently Working On
                     </h3>
                     <ul className="space-y-2 mt-1">
-                      <li className="flex items-center gap-2"><span>🖥️</span> Developing & setting up backend infrastructure for commission calculator web app</li>
-                      <li className="flex items-center gap-2"><span>🧪</span> POCs for Legacy Batch Modernization & a Wiki website</li>
+                      <li className="flex items-center gap-2"><span>🖥️</span> Developing & setting up backend infrastructure web apps</li>
                       <li className="flex items-center gap-2"><span>📝</span> Documenting Playbooks and best practices</li>
+                      <li className="flex items-center gap-2"><span>🧪</span> POCs experimenting with AI assisted prototyping & development</li>
                     </ul>
                   </div>
                 </div>
@@ -748,7 +749,7 @@ export default function App() {
                         </div>
                       </li>
                     </ul>
-                    
+
                     {/* Stoic Quote */}
                     <div className={`mt-4 pt-4 border-t ${isDark ? 'border-indigo-400/20' : 'border-indigo-300/30'}`}>
                       <p className={`${textTertiaryClass} text-xs italic text-center`}>
