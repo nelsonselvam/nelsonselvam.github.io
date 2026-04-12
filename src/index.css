@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Nunito:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,25 +6,156 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
+  body { overflow: hidden; height: 100vh; }
 }
 
+/* ===== BOOK MODE STYLES ===== */
 @layer components {
-  .card {
-    @apply bg-white rounded-2xl shadow-soft p-6;
+  .book-page-dark {
+    background: linear-gradient(170deg, #1c1a16 0%, #1e1c17 30%, #201d18 60%, #1c1a16 100%);
+    position: relative;
   }
-  .pill {
-    @apply inline-flex items-center rounded-full border border-slate-200 px-3 py-1 text-sm;
+  .book-page-dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(180, 140, 80, 0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(180, 140, 80, 0.02) 0%, transparent 40%);
+    pointer-events: none;
   }
-  .btn {
-    @apply inline-flex items-center gap-2 rounded-2xl px-4 py-2 bg-accent text-white hover:bg-accent-dark transition;
+  .book-page-light {
+    background: linear-gradient(170deg, #fefcf7 0%, #fffef9 30%, #fdfbf4 60%, #fefcf7 100%);
+    position: relative;
   }
-  .section {
-    @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  .book-page-light::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(180, 140, 80, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(180, 140, 80, 0.03) 0%, transparent 40%);
+    pointer-events: none;
   }
-  .glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  .chapter-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
   }
-  .glass-dark {
-    @apply bg-slate-900/30 backdrop-blur-md border border-slate-700/50;
+  .chapter-divider::before,
+  .chapter-divider::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
   }
+  .chapter-divider-dark::before,
+  .chapter-divider-dark::after {
+    background: linear-gradient(90deg, transparent, rgba(180, 140, 80, 0.3), transparent);
+  }
+  .chapter-divider-light::before,
+  .chapter-divider-light::after {
+    background: linear-gradient(90deg, transparent, rgba(120, 100, 70, 0.25), transparent);
+  }
+  .toc-leader {
+    flex: 1;
+    border-bottom: 1px dotted currentColor;
+    opacity: 0.3;
+    margin: 0 0.75rem;
+    position: relative;
+    bottom: 0.25rem;
+  }
+  .page-edge-right {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2rem;
+    height: 100%;
+    pointer-events: none;
+  }
+  .page-edge-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1rem;
+    height: 100%;
+    pointer-events: none;
+  }
+  .book-scroll::-webkit-scrollbar { width: 4px; }
+  .book-scroll::-webkit-scrollbar-track { background: transparent; }
+  .book-scroll::-webkit-scrollbar-thumb { background: rgba(180, 140, 80, 0.2); border-radius: 2px; }
+}
+
+@keyframes pageEnterRight {
+  from { transform: perspective(1200px) rotateY(60deg) scale(0.92); opacity: 0; }
+  to { transform: perspective(1200px) rotateY(0deg) scale(1); opacity: 1; }
+}
+@keyframes pageExitLeft {
+  from { transform: perspective(1200px) rotateY(0deg) scale(1); opacity: 1; }
+  to { transform: perspective(1200px) rotateY(-60deg) scale(0.92); opacity: 0; }
+}
+.timeline-line {
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+}
+
+/* ===== CHAT MODE STYLES ===== */
+.typing-dots {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+  padding: 4px 0;
+}
+.typing-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: typingBounce 1.4s infinite ease-in-out;
+}
+.typing-dots span:nth-child(1) { animation-delay: 0s; }
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-8px); opacity: 1; }
+}
+
+.typing-cursor::after {
+  content: '▊';
+  animation: cursorBlink 0.8s step-end infinite;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 0.7; }
+  51%, 100% { opacity: 0; }
+}
+
+.chat-scroll::-webkit-scrollbar { width: 6px; }
+.chat-scroll::-webkit-scrollbar-track { background: transparent; }
+.chat-scroll::-webkit-scrollbar-thumb { background: rgba(113, 113, 122, 0.25); border-radius: 3px; }
+.chat-scroll::-webkit-scrollbar-thumb:hover { background: rgba(113, 113, 122, 0.45); }
+
+@keyframes messageSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.message-enter {
+  animation: messageSlideIn 0.3s ease-out forwards;
+}
+
+@keyframes richFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rich-enter {
+  animation: richFadeIn 0.4s ease-out 0.15s forwards;
+  opacity: 0;
 }
