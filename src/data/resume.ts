@@ -24,7 +24,7 @@ export const careerMilestones = [
     location: "India",
     icon: "🎓",
     type: "education",
-    details: "RVS College of Engineering & Technology (Anna University) · CGPA 8.73",
+    details: "RVS College of Engineering & Technology (Anna University)",
     color: "indigo"
   },
   {
@@ -65,7 +65,7 @@ export const careerMilestones = [
     location: "USA",
     icon: "🚀",
     type: "career",
-    details: "Building scalable platforms, leading modernization, mentoring engineers",
+    details: "Building scalable platforms, leading modernization, driving technical excellence",
     logo: "/images/logo_cvs.png",
     color: "red"
   }
@@ -93,8 +93,8 @@ export const skillGroups = [
   {
     category: "Cloud & Platform",
     icon: "☁️",
-    skills: ["AWS (Certified)", "GCP (Learning)", "Docker", "CI/CD", "Jenkins"],
-    annotation: null
+    skills: ["AWS (Certified)", "GCP (Certified)", "GitHub (Certified: Copilot & Actions)", "Docker", "Jenkins"],
+    annotation: "Multi-cloud capability"
   },
   {
     category: "Integration",
@@ -109,6 +109,12 @@ export const skillGroups = [
     annotation: null
   },
   {
+    category: "AI & Context Engineering",
+    icon: "🤖",
+    skills: ["Prompt Engineering", "Context Engineering", "Model Context Protocol (MCP)", "LLM Integration"],
+    annotation: "Where the future is heading"
+  },
+  {
     category: "Business Intelligence",
     icon: "📊",
     skills: ["Tableau", "Power BI"],
@@ -118,10 +124,9 @@ export const skillGroups = [
 
 export const currentStatus = {
   learning: [
-    { icon: "🧠", text: "Cloud Engineering with Google Cloud Platform" },
-    { icon: "🚀", text: "Context & Prompt Engineering, MCP" },
-    { icon: "🌊", text: "Apache Airflow" },
-    { icon: "⚡", text: "GitHub Actions & GitOps" },
+    { icon: "🚀", text: "Context Engineering & Model Context Protocol (MCP)" },
+    { icon: "🌍", text: "AWS ML Associate" },
+    { icon: "🌊", text: "Data Engineering pipelines with Apache Airflow" },
   ],
   working: [
     { icon: "🖥️", text: "Developing & setting up backend infrastructure web apps" },
@@ -129,14 +134,22 @@ export const currentStatus = {
     { icon: "🧪", text: "POCs experimenting with AI-assisted prototyping & development" },
   ],
   reading: [
-    { title: "Ikigai (生き甲斐)", author: "Héctor García & Francesc Miralles" },
-    { title: "The Daily Stoic", author: "Ryan Holiday & Stephen Hanselman" },
-    { title: "Thinking, Fast & Slow", author: "Daniel Kahneman" },
+    { 
+      title: "Ikigai (生き甲斐)", 
+      author: "Héctor García & Francesc Miralles",
+      quote: "There is a passion inside you, a unique talent that gives meaning to your days."
+    },
+    { 
+      title: "The Daily Stoic", 
+      author: "Ryan Holiday & Stephen Hanselman",
+      quote: "You have power over your mind — not outside events. Realize this, and you will find strength."
+    },
+    { 
+      title: "Thinking, Fast & Slow", 
+      author: "Daniel Kahneman",
+      quote: "Nothing in life is as important as you think it is, while you are thinking about it."
+    },
   ],
-  readingQuote: {
-    text: "You have power over your mind — not outside events. Realize this, and you will find strength.",
-    author: "Marcus Aurelius"
-  },
   spotify: [
     { type: "episode", url: "https://open.spotify.com/embed/episode/5ESBS8xJyHY2thOnNm9dKV/video?utm_source=generator" },
     { type: "episode", url: "https://open.spotify.com/embed/episode/1bx2B9lDhiujXPU2u20AAX/video?utm_source=generator" },
@@ -188,7 +201,7 @@ export const funFacts = [
   { icon: "👤", text: "Named after Nelson Mandela — still working on the legacy part." },
   { icon: "📚", text: "Avid reader. Good books sharpen both empathy and engineering judgment." },
   { icon: "🎵", text: "Background scores and playlists are my preferred debugging companions." },
-  { icon: "☕", text: "Good coffee & slow conversations — where the best ideas surface." },
+  { icon: "🌍", text: "Married to a fellow Cloud Engineer! When offline, you'll find us traveling, baking, cooking a killer biriyani, or fighting over what series to binge-watch." },
 ];
 
 export const conversation: Array<{
@@ -199,12 +212,11 @@ export const conversation: Array<{
 }> = [
   {
     user: "Who is Nelson Selvam?",
-    assistant: "Nelson Selvam is a Senior Software Engineer based in Bristol, CT, with over 10 years of experience designing and delivering scalable, backend-focused full-stack solutions.\n\nHe specializes in microservices architecture, Spring Boot, and modernizing legacy systems with cloud-native approaches. Currently at CVS Aetna, he focuses on building platforms that teams rely on — not just features that ship once.",
-    richContentType: "profile",
+    assistant: "Nelson Selvam is a Senior Software Engineer based in Bristol, CT, with over 10 years of experience designing and delivering scalable, backend-focused full-stack solutions.\n\nHe specializes in microservices architecture, Spring Boot, and modernizing legacy systems with cloud-native approaches. Currently at CVS Aetna, he has recently joined the Broker Commissions Team, where he is primarily focused on working on the core Commissions Calculator project."
   },
   {
     user: "What can Nelson help with?",
-    assistant: "Absolutely nothing. {{pause}} Oh wait, I take that back! 😄 He's actually what you'd call an 'average programmer'... who just happens to have 10+ years of building enterprise systems, mass migration experience, and an unhealthy obsession with clean architecture.\n\nHere's what's actually in the toolkit:",
+    assistant: "Let's be honest, 90% of backend engineering is just fighting with Maven dependencies and googling 'why isn't my Spring Bean autowiring'. {{pause}} But for that other 10%, Nelson actually knows what he's doing! \n\nFrom modernizing legacy monoliths into scalable cloud backends, to engineering AI contexts, here is the actual toolkit he uses to make the magic happen:",
     richContentType: "skills",
   },
   {
@@ -218,6 +230,11 @@ export const conversation: Array<{
     richContentType: "currentStatus",
   },
   {
+    user: "What is he reading or listening to?",
+    assistant: "Nelson is a big believer in continuous input. Here are the books currently on his nightstand and the tracks keeping him in the flow state:",
+    richContentType: "currentMedia",
+  },
+  {
     user: "How does he approach engineering?",
     assistant: "Pretty seriously, actually — which is surprising for someone who named his AI model after a Naruto technique. 😏\n\nNelson operates on a few core principles that shape how he builds and leads:\n\n📋 Oh, I also have a user manual for working with him — ask me about it!",
     richContentType: "philosophy",
@@ -226,7 +243,6 @@ export const conversation: Array<{
     user: "Show me the user manual!",
     assistant: "Glad you asked! Think of this as a README.md — but for a human. Here's how to get the best out of working with Nelson:",
     richContentType: "userManual",
-    showAfter: 4,
   },
   {
     user: "Any fun facts? How do I connect with him?",

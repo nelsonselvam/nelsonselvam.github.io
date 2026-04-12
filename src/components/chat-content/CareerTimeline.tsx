@@ -34,7 +34,7 @@ export default function CareerTimeline({ isDark = true }: { isDark?: boolean }) 
               <div className={`absolute left-[13px] top-7 bottom-0 w-px ${lineColor} opacity-30`} />
             )}
             {/* Dot */}
-            <div className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm mt-0.5 z-10 transition-all duration-300 ${
+            <div className={`flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-base mt-0.5 z-10 transition-all duration-300 ${
               isLatest
                 ? 'bg-green-500/20 border-2 border-green-400/50'
                 : `${dotNormal} border`
@@ -42,12 +42,12 @@ export default function CareerTimeline({ isDark = true }: { isDark?: boolean }) 
             {/* Content */}
             <div className="pb-5 flex-1 min-w-0">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className={`${titleColor} font-inter font-semibold text-sm`}>{m.title}</span>
-                <span className={`${dateColor} font-mono text-xs`}>{m.date}</span>
-                <span className={`${locColor} text-xs`}>· {m.location}</span>
+                <span className={`${titleColor} font-inter font-semibold text-base`}>{m.title}</span>
+                <span className={`${dateColor} font-mono text-sm`}>{m.date}</span>
+                <span className={`${locColor} text-sm`}>· {m.location}</span>
               </div>
-              <p className={`${descColor} font-inter text-xs mt-0.5`}>{m.description}</p>
-              {m.details && <p className={`${detailColor} font-inter text-xs mt-0.5`}>{m.details}</p>}
+              <p className={`${descColor} font-inter text-sm mt-0.5`}>{m.description}</p>
+              {m.details && <p className={`${detailColor} font-inter text-sm mt-0.5`}>{m.details}</p>}
             </div>
           </div>
         )

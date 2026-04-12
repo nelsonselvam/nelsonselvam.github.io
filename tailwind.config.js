@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        inter: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        inter: ['Nunito', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+        mono: ['"Fira Code"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
         playfair: ['"Playfair Display"', 'Georgia', 'serif'],
         nunito: ['Nunito', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
         caveat: ['Caveat', 'cursive'],

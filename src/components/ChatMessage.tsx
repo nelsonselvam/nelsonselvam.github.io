@@ -6,6 +6,8 @@ import PhilosophyCard from './chat-content/PhilosophyCard'
 import FunFacts from './chat-content/FunFacts'
 import UserManualCard from './chat-content/UserManualCard'
 
+import CurrentMedia from './chat-content/CurrentMedia'
+
 interface ChatMessageProps {
   role: 'system' | 'user' | 'assistant'
   text: string
@@ -37,6 +39,7 @@ function RichContent({ type, isDark }: { type: string; isDark: boolean }) {
     case 'timeline': return <CareerTimeline isDark={isDark} />
     case 'skills': return <SkillsGrid isDark={isDark} />
     case 'currentStatus': return <CurrentStatus isDark={isDark} />
+    case 'currentMedia': return <CurrentMedia isDark={isDark} />
     case 'philosophy': return <PhilosophyCard isDark={isDark} />
     case 'funFacts': return <FunFacts isDark={isDark} />
     case 'userManual': return <UserManualCard isDark={isDark} />
@@ -56,7 +59,7 @@ export default function ChatMessage({ role, text, richContentType, isStreaming, 
   if (role === 'user') {
     return (
       <div className="message-enter flex justify-end py-3 px-6 md:px-12 lg:px-24">
-        <div className={`max-w-md text-sm font-mono flex items-center gap-2 ${
+        <div className={`max-w-md text-base font-mono flex items-center gap-2 ${
           isDark ? 'text-gray-300' : 'text-gray-600'
         }`}>
           <span className={`${isDark ? 'text-emerald-500' : 'text-emerald-600'} font-bold`}>➜</span>
@@ -85,7 +88,7 @@ export default function ChatMessage({ role, text, richContentType, isStreaming, 
         </div>
 
         {/* Text */}
-        <div className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed font-inter ${isStreaming ? 'typing-cursor' : ''}`}>
+        <div className={`text-base ${isDark ? 'text-gray-300' : 'text-gray-700'} leading-relaxed font-inter ${isStreaming ? 'typing-cursor' : ''}`}>
           {formatText(text, isDark)}
         </div>
 

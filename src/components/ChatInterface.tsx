@@ -20,7 +20,7 @@ interface DisplayMessage {
 }
 
 const AI_MODELS = [
-  { id: 'the-flying-raijin-04', icon: '⚡', gradient: 'from-violet-500 to-blue-500', tagline: 'Contextual AI Model' },
+  { id: 'the-flying-raijin-04', icon: '⚡', gradient: 'from-violet-500 to-blue-500', tagline: 'Powered by nested if' },
   { id: 'edualc-3.5-sonnet', icon: '🧡', gradient: 'from-orange-500 to-amber-500', tagline: 'Definitely not Claude' },
   { id: 'inimeg-2.0-flash', icon: '💎', gradient: 'from-blue-400 to-cyan-400', tagline: 'Totally original' },
   { id: 'tpgtahc-4o-mini', icon: '💚', gradient: 'from-green-500 to-emerald-400', tagline: 'Not what you think' },
@@ -35,7 +35,7 @@ function getModelForQuestion(questionIdx: number) {
 const SYSTEM_MSG: DisplayMessage = {
   id: 'system-0',
   role: 'system',
-  text: 'Meet Nelson — an AI-powered introduction trained on 10+ years of real-world engineering experience. Pick a question below to get started.',
+  text: "Meet Nelson. This isn't actually an AI-powered introduction, rather just a mock-up of an AI chatbot interface. Because why write a simple intro when you can drastically over-engineer an interactive terminal to introduce yourself to the team? Pick a question below to get started.",
 }
 
 export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: ChatInterfaceProps) {
@@ -43,34 +43,47 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
   const [answeredIndices, setAnsweredIndices] = useState<Set<number>>(new Set())
   const [activeIdx, setActiveIdx] = useState<number | null>(null)
   const [streamPhase, setStreamPhase] = useState<'idle' | 'switching' | 'thinking' | 'streaming'>('idle')
+  const [tokens, setTokens] = useState<number>(1420)
   const [streamWordIdx, setStreamWordIdx] = useState(0)
   const [activeModel, setActiveModel] = useState(AI_MODELS[0])
   const [showModelPicker, setShowModelPicker] = useState(false)
+  const [sessionHistory, setSessionHistory] = useState<string[]>([])
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  // Theme
+  useEffect(() => {
+    if (scrollRef.current) {
+      const scrollHeight = scrollRef.current.scrollHeight
+      setTimeout(() => {
+        if (scrollRef.current) {
+          scrollRef.current.scrollTo({ top: scrollHeight, behavior: 'smooth' })
+        }
+      }, 100)
+    }
+  }, [messages, streamPhase])
+
+  // Theme (Claude Desktop warm pastel aesthetics for Light Mode)
   const t = {
-    bg: isDark ? 'bg-[#000000]' : 'bg-white',
-    sidebar: isDark ? 'bg-[#0a0a0a]' : 'bg-slate-50',
-    border: isDark ? 'border-[#1f1f1f]' : 'border-gray-200',
-    text: isDark ? 'text-gray-100' : 'text-gray-900',
-    textMuted: isDark ? 'text-gray-400' : 'text-gray-500',
-    textDim: isDark ? 'text-zinc-500' : 'text-gray-400',
-    textFaint: isDark ? 'text-zinc-600' : 'text-gray-300',
-    textLabel: isDark ? 'text-gray-200' : 'text-gray-800',
-    btnHover: isDark ? 'hover:bg-[#1f1f1f]' : 'hover:bg-gray-100',
-    cardBg: isDark ? 'bg-[#141414]' : 'bg-gray-100',
-    cardBorder: isDark ? 'border-[#292929]' : 'border-gray-200',
+    bg: isDark ? 'bg-[#000000]' : 'bg-[#fdfaf6]', 
+    sidebar: isDark ? 'bg-[#0a0a0a]' : 'bg-[#f4f2ee]',
+    border: isDark ? 'border-[#1f1f1f]' : 'border-[#eae5dc]',
+    text: isDark ? 'text-gray-100' : 'text-[#2d2b2a]',
+    textMuted: isDark ? 'text-gray-400' : 'text-[#7f7a75]',
+    textDim: isDark ? 'text-zinc-500' : 'text-[#9c9791]',
+    textFaint: isDark ? 'text-zinc-600' : 'text-[#aba59f]',
+    textLabel: isDark ? 'text-gray-200' : 'text-[#4a4745]',
+    btnHover: isDark ? 'hover:bg-[#1f1f1f]' : 'hover:bg-[#eae5dc]/60',
+    cardBg: isDark ? 'bg-[#141414]' : 'bg-white',
+    cardBorder: isDark ? 'border-[#292929]' : 'border-[#eae5dc]',
     inputBg: isDark ? 'bg-[#0a0a0a]' : 'bg-white',
-    inputBorder: isDark ? 'border-[#1f1f1f]' : 'border-gray-300',
-    dropdownBg: isDark ? 'bg-[#141414]' : 'bg-white',
-    dropdownBorder: isDark ? 'border-[#292929]' : 'border-gray-200',
-    dropdownHover: isDark ? 'hover:bg-[#1f1f1f]' : 'hover:bg-gray-50',
-    dropdownActive: isDark ? 'bg-[#292929]' : 'bg-gray-100',
-    progressBg: isDark ? 'bg-[#1f1f1f]' : 'bg-gray-200',
-    chipBg: isDark ? 'bg-[#0a0a0a] hover:bg-[#141414]' : 'bg-white hover:bg-gray-50',
-    chipBorder: isDark ? 'border-[#292929] hover:border-[#444444]' : 'border-gray-200 hover:border-gray-300',
-    chipText: isDark ? 'text-gray-300 hover:text-white' : 'text-gray-700 hover:text-gray-900',
+    inputBorder: isDark ? 'border-[#1f1f1f]' : 'border-[#eae5dc]',
+    dropdownBg: isDark ? 'bg-[#141414]' : 'bg-[#fdfaf6]',
+    dropdownBorder: isDark ? 'border-[#292929]' : 'border-[#eae5dc]',
+    dropdownHover: isDark ? 'hover:bg-[#1f1f1f]' : 'hover:bg-[#f4f2ee]',
+    dropdownActive: isDark ? 'bg-[#292929]' : 'bg-[#eae5dc]',
+    progressBg: isDark ? 'bg-[#1f1f1f]' : 'bg-[#eae5dc]',
+    chipBg: isDark ? 'bg-[#0a0a0a] hover:bg-[#141414]' : 'bg-white hover:bg-[#f4f2ee]',
+    chipBorder: isDark ? 'border-[#292929] hover:border-[#444444]' : 'border-[#eae5dc] hover:border-[#d7d0c3]',
+    chipText: isDark ? 'text-gray-300 hover:text-white' : 'text-[#4a4745] hover:text-[#2d2b2a]',
   }
 
   const getTokens = useCallback((text: string) => text.split(/\s+/).filter(Boolean), [])
@@ -111,6 +124,7 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
       setAnsweredIndices(prev => new Set(prev).add(activeIdx))
       setActiveIdx(null)
       setStreamPhase('idle')
+      setTokens(prev => prev + 250 + Math.floor(Math.random() * 200))
       return
     }
     const delay = tokens[streamWordIdx] === '{{pause}}' ? 2000 : 40
@@ -123,6 +137,7 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
     if (streamPhase !== 'idle') return
     // Add user message
     setMessages(prev => [...prev, { id: `user-${idx}`, role: 'user', text: conversation[idx].user }])
+    setSessionHistory(prev => [conversation[idx].user, ...prev])
     setActiveIdx(idx)
 
     const targetModel = getModelForQuestion(idx)
@@ -159,6 +174,7 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
       setAnsweredIndices(prev => new Set(prev).add(activeIdx))
       setActiveIdx(null)
       setStreamPhase('idle')
+      setTokens(prev => prev + 250 + Math.floor(Math.random() * 200))
     }
   }, [streamPhase, activeIdx])
 
@@ -186,6 +202,12 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
     <div className={`flex h-screen ${t.bg} ${t.text} font-inter`}>
       {/* Sidebar */}
       <aside className={`hidden md:flex flex-col w-64 ${t.sidebar} border-r ${t.border}`}>
+        {/* Brand Logo */}
+        <div className="pt-5 px-5 pb-1 flex items-center gap-2">
+          <span className="font-bold text-xl tracking-tight font-inter">r<span className="text-violet-500">AI</span>jinGPT</span>
+          <span className={`px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider font-bold ${isDark ? 'bg-zinc-800 text-zinc-400' : 'bg-gray-200 text-gray-500'}`}>Beta</span>
+        </div>
+
         {/* Model selector — animates on switch */}
         <div className={`p-4 border-b ${t.border} relative`}>
           <button
@@ -234,11 +256,53 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
           </button>
         </div>
 
-        <div className="flex-1 px-3">
-          <p className={`text-xs ${t.textFaint} font-medium uppercase tracking-wider px-3 mb-2`}>Today</p>
-          <div className={`flex items-center gap-2 px-3 py-2 ${t.cardBg} rounded-lg border ${t.cardBorder}`}>
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-            <span className={`text-sm ${t.textLabel} truncate`}>Nelson's Introduction</span>
+        <div className="flex-1 px-3 overflow-y-auto chat-scroll space-y-6 pb-4">
+          <div>
+            <p className={`text-xs ${t.textFaint} font-medium uppercase tracking-wider px-3 mb-2`}>Today</p>
+            <div className={`flex items-start gap-2 px-3 py-2 ${t.cardBg} rounded-lg border ${t.cardBorder}`}>
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0 mt-1.5" />
+              <span className={`text-sm ${t.textLabel} font-medium leading-snug`}>Welcome to rAIjinGPT</span>
+            </div>
+            
+            {/* Dynamic Session History */}
+            {sessionHistory.map((q, i) => (
+              <div key={`hist-${i}`} className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textLabel} font-medium cursor-default transition-colors mt-1`}>
+                <span className="leading-snug">{q}</span>
+              </div>
+            ))}
+
+            <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors mt-1`}>
+              <span className="leading-snug">GCP bill $40,000 overnight why</span>
+            </div>
+            <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+              <span className="leading-snug">how to make VS Code work exactly like Cursor</span>
+            </div>
+          </div>
+
+          <div>
+             <p className={`text-xs ${t.textFaint} font-medium uppercase tracking-wider px-3 mb-2`}>Previous 7 Days</p>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">how to politely ask Claude to fix my code</span>
+             </div>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">I asked AI to center a div and my DB is gone</span>
+             </div>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">who approved this PR (oh wait it was me)</span>
+             </div>
+          </div>
+
+           <div>
+             <p className={`text-xs ${t.textFaint} font-medium uppercase tracking-wider px-3 mb-2`}>Previous 30 Days</p>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">Jira ticket stuck 'In Progress' since 2023</span>
+             </div>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">emotionally apologizing to ChatGPT for my code</span>
+             </div>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">Works on localhost:3000, ship it to prod</span>
+             </div>
           </div>
         </div>
 
@@ -265,8 +329,8 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
       <main className="flex-1 flex flex-col min-w-0">
         <div className={`md:hidden flex items-center justify-between p-3 border-b ${t.border}`}>
           <div className="flex items-center gap-2">
-            <span className="text-sm">{activeModel.icon}</span>
-            <span className="text-sm font-semibold">{activeModel.id}</span>
+            <span className="font-bold text-xl tracking-tight font-inter">r<span className="text-violet-500">AI</span>jinGPT</span>
+            <span className={`text-xs ${t.textDim} font-mono ml-1`}>{activeModel.id}</span>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={onSwitchToBook} className={`${t.textMuted} text-sm`}>📖</button>
@@ -360,10 +424,10 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
         {/* Input Bar */}
         <div className={`border-t ${t.border} p-4`}>
           <div className="max-w-3xl mx-auto flex items-center gap-3">
-            <div className={`flex-1 flex items-center ${t.inputBg} border ${t.inputBorder} rounded-xl px-4 py-3 font-mono`}>
+            <div className={`flex-1 flex items-center ${t.inputBg} border ${t.inputBorder} rounded-xl px-4 py-3 font-mono shadow-sm`}>
               <span className={`text-blue-500 mr-2`}>$</span>
               <span className={`${t.textFaint} text-sm flex-1`}>
-                {streamPhase === 'idle' ? remainingQuestions.length > 0 ? './ask_question.sh' : './exit.sh ✨' : 'evaluating...'}
+                {streamPhase === 'idle' ? remainingQuestions.length > 0 ? './ask_question.sh' : 'echo "Thank you for exploring! 👋" && exit 0' : 'evaluating...'}
               </span>
               {streamPhase === 'idle' && (
                 <span className={`w-1.5 h-4 bg-blue-500 animate-pulse ml-1`}></span>
@@ -371,19 +435,28 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
             </div>
             {streamPhase !== 'idle' && (
               <button onClick={handleSkip}
-                className={`px-4 py-3 ${t.inputBg} ${t.btnHover} border ${t.inputBorder} rounded-xl text-sm ${t.textMuted} transition-colors flex items-center gap-1.5 font-mono`}>
+                className={`px-4 py-3 ${t.inputBg} ${t.btnHover} border ${t.inputBorder} shadow-sm rounded-xl text-sm ${t.textMuted} transition-colors flex items-center gap-1.5 font-mono`}>
                 <span className="text-blue-500">^C</span> kill process
               </button>
             )}
           </div>
-          <div className="max-w-3xl mx-auto mt-2 text-center flex justify-between px-2">
-            <span className={`text-xs font-mono text-emerald-500/50`}>
-              system ready.
+          <div className="max-w-3xl mx-auto mt-2 text-center flex items-center justify-between px-2">
+            <span className={`text-xs font-mono ${remainingQuestions.length === 0 ? 'text-blue-500/60' : 'text-emerald-500/60'}`}>
+              {remainingQuestions.length === 0 ? 'session disconnected.' : 'system ready.'}
             </span>
-            <span className={`text-xs font-mono border ${isDark ? 'border-[#1f1f1f] bg-[#0a0a0a]' : 'border-gray-200 bg-gray-50'} px-2 py-0.5 rounded ${t.textFaint}`}>
-               {activeModel.id}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className={`text-[10px] font-mono ${isDark ? 'text-zinc-600' : 'text-slate-400'}`}>
+                ctx: {tokens.toLocaleString()} / 128k
+              </span>
+              <span className={`text-xs font-mono border flex-shrink-0 ${isDark ? 'border-[#1f1f1f] bg-[#0a0a0a]' : 'border-[#eae5dc] bg-white text-[#7f7a75]'} px-2 py-0.5 rounded`}>
+                 {activeModel.id}
+              </span>
+            </div>
           </div>
+          <p className={`max-w-3xl mx-auto mt-3 text-center text-[10.5px] ${isDark ? 'text-zinc-600' : 'text-slate-400'} italic`}>
+            Vibe coded with Cursor & Antigravity · React + Tailwind · Deployed on GitHub Pages<br/>
+            Disclaimer: The model names in the dropdown are parodies spelled backwards for comedic effect. I haven't secretly trained my own foundation models!
+          </p>
         </div>
       </main>
     </div>

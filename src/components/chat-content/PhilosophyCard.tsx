@@ -11,9 +11,9 @@ export default function PhilosophyCard({ isDark = true }: { isDark?: boolean }) 
         <div key={i} className="flex items-start gap-3">
           <span className="text-lg flex-shrink-0 mt-0.5">{p.icon}</span>
           <div>
-            <h4 className={`${titleColor} font-inter font-semibold text-sm`}>{p.title}</h4>
-            <p className={`${descColor} font-inter text-xs mt-0.5 leading-relaxed`}>{p.description}</p>
-            {p.annotation && <span className={`${annotColor} font-mono text-xs mt-1 inline-block`}>{p.annotation}</span>}
+            <h4 className={`${titleColor} font-inter font-semibold text-base`}>{p.title}</h4>
+            <p className={`${descColor} font-inter text-sm mt-0.5 leading-relaxed`}>{p.description}</p>
+            {p.annotation && <span className={`${annotColor} font-mono text-sm mt-1 inline-block`}>{p.annotation}</span>}
           </div>
         </div>
       ))}

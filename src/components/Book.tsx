@@ -101,7 +101,7 @@ export default function Book({ isDark, onToggleDark, onSwitchToChat }: BookProps
       {/* Theme Toggle */}
       <button
         onClick={onToggleDark}
-        className={`fixed top-5 right-5 z-50 p-2.5 rounded-full transition-all duration-300 shadow-lg ${
+        className={`fixed top-5 right-5 z-50 print:hidden p-2.5 rounded-full transition-all duration-300 shadow-lg ${
           isDark
             ? 'bg-paper-dark/80 hover:bg-paper-dark text-gold-400 border border-gold-800/30'
             : 'bg-white/80 hover:bg-white text-stone-600 border border-stone-300/50'
@@ -115,7 +115,7 @@ export default function Book({ isDark, onToggleDark, onSwitchToChat }: BookProps
       {onSwitchToChat && (
         <button
           onClick={onSwitchToChat}
-          className={`fixed top-5 right-16 z-50 p-2.5 rounded-full transition-all duration-300 shadow-lg ${
+          className={`fixed top-5 right-16 z-50 print:hidden p-2.5 rounded-full transition-all duration-300 shadow-lg ${
             isDark
               ? 'bg-paper-dark/80 hover:bg-paper-dark text-gold-400 border border-gold-800/30'
               : 'bg-white/80 hover:bg-white text-stone-600 border border-stone-300/50'
@@ -126,12 +126,25 @@ export default function Book({ isDark, onToggleDark, onSwitchToChat }: BookProps
         </button>
       )}
 
+      {/* Export to PDF */}
+      <button
+        onClick={() => window.print()}
+        className={`fixed top-5 right-[104px] z-50 print:hidden p-2.5 rounded-full transition-all duration-300 shadow-lg ${
+          isDark
+            ? 'bg-paper-dark/80 hover:bg-paper-dark text-gold-400 border border-gold-800/30'
+            : 'bg-white/80 hover:bg-white text-stone-600 border border-stone-300/50'
+        }`}
+        aria-label="Export to PDF"
+      >
+        🖨️
+      </button>
+
       {/* GitHub Link */}
       <a
         href="https://github.com/nelsonselvam/nelsonselvam.github.io/tree/main"
         target="_blank"
         rel="noopener noreferrer"
-        className={`fixed top-5 left-5 z-50 flex items-center gap-2 px-3 py-2 rounded-lg shadow-lg transition-all duration-300 text-sm font-medium ${
+        className={`fixed top-5 left-5 z-50 print:hidden flex items-center gap-2 px-3 py-2 rounded-lg shadow-lg transition-all duration-300 text-sm font-medium ${
           isDark
             ? 'bg-paper-dark/80 hover:bg-paper-dark text-gold-400 border border-gold-800/30'
             : 'bg-white/80 hover:bg-white text-stone-600 border border-stone-300/50'
