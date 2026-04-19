@@ -73,53 +73,29 @@ export const careerMilestones = [
 
 export const skillGroups = [
   {
-    category: "Backend Systems",
+    category: "Backend & Architecture",
     icon: "⚙️",
-    skills: ["Java", "Spring Boot", "Spring Batch", "REST APIs", "Microservices"],
-    annotation: "Where I spend most of my time"
+    skills: ["Java & Spring Boot", "Microservices", "REST / APIGEE", "System Design"],
+    annotation: "Where he spends most of his time"
   },
   {
-    category: "Architecture & Design",
-    icon: "🏗️",
-    skills: ["System Design", "API Design", "Event-Driven Patterns", "Domain Modeling"],
-    annotation: "What I'm growing into"
-  },
-  {
-    category: "Data & Databases",
-    icon: "🗄️",
-    skills: ["Oracle", "PostgreSQL", "Snowflake", "SQL/PLSQL"],
-    annotation: null
-  },
-  {
-    category: "Cloud & Platform",
+    category: "Cloud & Infrastructure",
     icon: "☁️",
-    skills: ["AWS (Certified)", "GCP (Certified)", "GitHub (Certified: Copilot & Actions)", "Docker", "Jenkins"],
+    skills: ["AWS & GCP (Certified)", "GitHub & CI/CD", "Docker", "Observability"],
     annotation: "Multi-cloud capability"
   },
   {
-    category: "Integration",
-    icon: "🔗",
-    skills: ["REST", "SOAP", "APIGEE", "RabbitMQ", "S3"],
-    annotation: null
-  },
-  {
-    category: "Quality & Observability",
-    icon: "🔍",
-    skills: ["JUnit", "Mockito", "SonarQube", "Test Automation"],
-    annotation: null
+    category: "Data & Business Intelligence",
+    icon: "🗄️",
+    skills: ["Oracle / PostgreSQL", "Snowflake / SQL", "Tableau", "Power BI"],
+    annotation: "From raw data to insights"
   },
   {
     category: "AI & Context Engineering",
     icon: "🤖",
-    skills: ["Prompt Engineering", "Context Engineering", "Model Context Protocol (MCP)", "LLM Integration"],
-    annotation: "Where the future is heading"
-  },
-  {
-    category: "Business Intelligence",
-    icon: "📊",
-    skills: ["Tableau", "Power BI"],
-    annotation: null
-  },
+    skills: ["Prompt Engineering", "Context Engineering", "Model Context Protocol (MCP)"],
+    annotation: "Where the industry is heading"
+  }
 ];
 
 export const currentStatus = {
@@ -162,37 +138,31 @@ export const philosophy = {
     {
       icon: "🧠",
       title: "Ask why before how",
-      description: "Connect technical decisions to business outcomes. Understanding the problem deeply leads to solutions that outlast the sprint.",
-      annotation: "← This saves teams weeks"
-    },
-    {
-      icon: "📝",
-      title: "Reduce ambiguity",
-      description: "Through documentation, decision records, and clear ownership — complexity becomes manageable at scale.",
-      annotation: "← Scale enabler"
+      description: "He connects technical decisions to business outcomes. Understanding the problem deeply leads to solutions that outlast the sprint.",
+      annotation: "← Saves teams weeks"
     },
     {
       icon: "🏗️",
-      title: "Build for the team, not the ticket",
-      description: "Shared libraries, clear APIs, and institutional knowledge compound over time. Individual output matters less than organizational velocity.",
-      annotation: "← Multiplier mindset"
+      title: "Reduce ambiguity & build for the team",
+      description: "Through clear APIs, shared libraries, and documentation, he makes complexity manageable. Individual output matters less than organizational velocity.",
+      annotation: "← Scale enabler"
     },
     {
-      icon: "⚖️",
-      title: "Balance pragmatism with quality",
-      description: "Ship the right thing at the right time. Perfect is the enemy of delivered — but so is reckless speed.",
-      annotation: null
-    },
+      icon: "🤖",
+      title: "Automate the repetitive",
+      description: "He approaches repetitive tasks with an automation mindset. If a process requires doing the same thing twice, he scripts it.",
+      annotation: "← Eliminates toil"
+    }
   ],
   userManual: {
     dos: [
-      { icon: "🗣", text: "Ask questions anytime — I'm happy to clarify or brainstorm." },
+      { icon: "🗣", text: "Ask questions anytime — he's happy to clarify or brainstorm." },
       { icon: "✉️", text: "Give direct feedback — constructive input is always appreciated." },
       { icon: "💡", text: "Jump in with ideas — collaboration and shared input are welcome." },
     ],
     notes: [
-      { icon: "👂", text: "I like to listen first and then contribute once I have clarity." },
-      { icon: "⏳", text: "Async updates work great, but I'm always happy to sync when urgent." },
+      { icon: "👂", text: "He likes to listen first and contribute once he has clarity." },
+      { icon: "⏳", text: "Async updates work great, but he's always happy to sync when urgent." },
     ],
   },
 };
@@ -236,7 +206,7 @@ export const conversation: Array<{
   },
   {
     user: "How does he approach engineering?",
-    assistant: "Pretty seriously, actually — which is surprising for someone who named his AI model after a Naruto technique. 😏\n\nNelson operates on a few core principles that shape how he builds and leads:\n\n📋 Oh, I also have a user manual for working with him — ask me about it!",
+    assistant: "Pretty seriously, actually — which is surprising for someone who named his AI model after a Naruto technique. 😏\n\nHis core philosophy is simple: **What we code now, echoes into maintainability and every future release.**\n\nHe operates on three main principles that shape how he builds and leads:\n\n📋 Oh, I also have a user manual for working with him — ask me about it!",
     richContentType: "philosophy",
   },
   {

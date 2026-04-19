@@ -272,7 +272,7 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
             ))}
 
             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors mt-1`}>
-              <span className="leading-snug">GCP bill $40,000 overnight why</span>
+              <span className="leading-snug">To Claude or not too Claude</span>
             </div>
             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
               <span className="leading-snug">how to make VS Code work exactly like Cursor</span>
@@ -281,6 +281,9 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
 
           <div>
              <p className={`text-xs ${t.textFaint} font-medium uppercase tracking-wider px-3 mb-2`}>Previous 7 Days</p>
+             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
+               <span className="leading-snug">maven dependency tree looking like a CVS receipt</span>
+             </div>
              <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
                <span className="leading-snug">how to politely ask Claude to fix my code</span>
              </div>
@@ -295,15 +298,12 @@ export default function ChatInterface({ isDark, onToggleDark, onSwitchToBook }: 
            <div>
              <p className={`text-xs ${t.textFaint} font-medium uppercase tracking-wider px-3 mb-2`}>Previous 30 Days</p>
              <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
-               <span className="leading-snug">Jira ticket stuck 'In Progress' since 2023</span>
+               <span className="leading-snug">how to name this variable: compensation vs comp vs cmpstn</span>
              </div>
              <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
-               <span className="leading-snug">emotionally apologizing to ChatGPT for my code</span>
+               <span className="leading-snug">how to recover deleted branch I deleted to 'clean things up'</span>
              </div>
-             <div className={`flex items-start gap-2 px-3 py-2 ${t.btnHover} rounded-lg text-sm ${t.textMuted} cursor-default transition-colors`}>
-               <span className="leading-snug">Works on localhost:3000, ship it to prod</span>
-             </div>
-          </div>
+           </div>
         </div>
 
         <div className={`px-4 py-3 border-t ${t.border}`}>
