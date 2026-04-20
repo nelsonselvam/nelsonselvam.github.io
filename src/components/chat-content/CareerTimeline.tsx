@@ -41,7 +41,10 @@ export default function CareerTimeline({ isDark = true }: { isDark?: boolean }) 
             }`}>{m.icon}</div>
             {/* Content */}
             <div className="pb-5 flex-1 min-w-0">
-              <div className="flex items-baseline gap-2 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
+                {'logo' in m && m.logo && (
+                  <img src={m.logo} alt={`${m.title} logo`} className="h-5 w-auto object-contain rounded-xs bg-white/90 px-0.5" />
+                )}
                 <span className={`${titleColor} font-inter font-semibold text-base`}>{m.title}</span>
                 <span className={`${dateColor} font-mono text-sm`}>{m.date}</span>
                 <span className={`${locColor} text-sm`}>· {m.location}</span>

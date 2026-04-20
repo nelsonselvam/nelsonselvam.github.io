@@ -45,7 +45,7 @@ export const careerMilestones = [
     location: "India",
     icon: "⚙️",
     type: "transition",
-    details: "Tableau, Power BI, interactive dashboards, report automation",
+    details: "Transforming Data into Actionable Insights using Tableau & Power BI",
     color: "purple"
   },
   {
@@ -55,17 +55,17 @@ export const careerMilestones = [
     location: "USA",
     icon: "🌎",
     type: "transition",
-    details: "Microservices architecture, Spring Boot, AWS, REST API design",
+    details: "Leading the Design and Development of Backend Microservices at Mphasis for a Major U.S. Insurance Provider",
     color: "blue"
   },
   {
-    title: "CVS Aetna",
-    description: "Senior Software Engineer",
+    title: "Joined CVS Aetna",
+    description: "Senior Software Development Engineer",
     date: "Present",
     location: "USA",
     icon: "🚀",
     type: "career",
-    details: "Building scalable platforms, leading modernization, driving technical excellence",
+    details: "Building scalable platforms, driving modernization & technical excellence",
     logo: "/images/logo_cvs.png",
     color: "red"
   }
